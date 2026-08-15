@@ -2,6 +2,7 @@ import os
 import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiohttp import web
 from config import BOT_TOKEN
 
@@ -9,43 +10,44 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 # =============================================================
-# HANDLERLAR (Foydalanuvchi xabarlariga javob beruvchi qism)
+# OLDINGI INTERFEYS (INLINE TUGMALAR)
 # =============================================================
 
 @dp.message(Command("start"))
 async def start_handler(message: types.Message):
-    keyboard = types.ReplyKeyboardMarkup(
-        keyboard=[
-            [types.KeyboardButton(text="📺 Anime kodi orqali qidirish")],
-            [types.KeyboardButton(text="🔍 Anime nomi orqali qidirish")],
-            [types.KeyboardButton(text="🎭 Janr tanlash")],
-            [types.KeyboardButton(text="📢 Asosiy kanal")]
-        ],
-        resize_keyboard=True
+    # Oldingi chiroyli Inline menyu
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_code")],
+            [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_name")],
+            [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="select_genre")],
+            # Kanal havolasini o'zingizning kanalingiz havolasiga almashtiring
+            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
+        ]
     )
     await message.answer(
-        "👋 Xush kelibsiz!\n\nKerakli bo'limni tanlang yoki anime kodini yuboring 👆",
+        "Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
         reply_markup=keyboard
     )
 
-@dp.message(lambda msg: msg.text == "📺 Anime kodi orqali qidirish")
-async def code_search(message: types.Message):
-    await message.answer("134 Anime kodini yuboring (Masalan: 1, 2, 3...):")
+# Inline tugmalar bosilganda javob berish
+@dp.callback_query(lambda c: c.data == "search_code")
+async def process_code(callback: types.CallbackQuery):
+    await callback.message.answer("Anime kodini yuboring (Masalan: 1, 2, 3...):")
+    await callback.answer()
 
-@dp.message(lambda msg: msg.text == "🔍 Anime nomi orqali qidirish")
-async def name_search(message: types.Message):
-    await message.answer("abc Anime nomini yozib yuboring:")
+@dp.callback_query(lambda c: c.data == "search_name")
+async def process_name(callback: types.CallbackQuery):
+    await callback.message.answer("Anime nomini yozib yuboring:")
+    await callback.answer()
 
-@dp.message(lambda msg: msg.text == "🎭 Janr tanlash")
-async def genre_select(message: types.Message):
-    await message.answer("🎭 Janrlar ro'yxati tez orada qo'shiladi.")
-
-@dp.message(lambda msg: msg.text == "📢 Asosiy kanal")
-async def channel_link(message: types.Message):
-    await message.answer("Kanalimizga a'zo bo'ling!")
+@dp.callback_query(lambda c: c.data == "select_genre")
+async def process_genre(callback: types.CallbackQuery):
+    await callback.message.answer("🎭 Janrlar ro'yxati tez orada qo'shiladi.")
+    await callback.answer()
 
 # =============================================================
-# RENDER WEB SERVER QISMI (Render o'chib qolmasligi uchun)
+# RENDER WEB SERVER QISMI
 # =============================================================
 
 async def handle(request):
@@ -62,10 +64,7 @@ async def start_web_server():
     await site.start()
 
 async def main():
-    # 1. Web serverni fonda yurgizish
     await start_web_server()
-    
-    # 2. Telegram bot pollingini boshlash
     print("@AniWerty_bot muammosiz ishga tushdi...")
     await dp.start_polling(bot)
 
