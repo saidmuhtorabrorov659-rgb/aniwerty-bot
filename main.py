@@ -8,7 +8,7 @@ from config import BOT_TOKEN
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# Zombi 100 qismlarining file_id bazasi
+# Anime ma'lumotlari va qismlarining file_id bazasi
 ANIME_DATABASE = {
     "1": "BAACAgIAAxkBAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
     "2": "BAACAgIAAxkBAAPAaoMrWNwYYARcEa-4NDygo9zwOLYAAjgyAAJGZyBKOYvpww2Wqu89BA",
@@ -24,7 +24,6 @@ ANIME_DATABASE = {
     "12": "BAACAgIAAxkBAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
 }
 
-# Opisaniya matnini tayyorlaydigan funksiya
 def get_anime_caption(ep_num: str) -> str:
     return (
         f"🎬 *Anime:* Zombi 100: O'lim oldi roʻyxat\n"
@@ -35,6 +34,16 @@ def get_anime_caption(ep_num: str) -> str:
         f"🟢 *Holati:* Tugagan\n\n"
         f"📢 *Kanal:* @aniwertyn1\n\n"
         f"👇 *Boshqa qismlarni tomosha qilish uchun tanlang:*"
+    )
+
+def get_main_keyboard():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_code")],
+            [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_name")],
+            [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="search_genre")],
+            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
+        ]
     )
 
 def get_episodes_keyboard():
@@ -80,35 +89,52 @@ async def start_handler(message: types.Message, command: CommandObject):
             )
             return
 
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_code")],
-            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
-        ]
+    await message.answer(
+        "Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
+        reply_markup=get_main_keyboard()
     )
-    await message.answer("Xush kelibsiz! Anime qismini ko'rish uchun kodingizni yuboring:", reply_markup=keyboard)
 
+# --- MENYU TUGMALARI ---
 @dp.callback_query(F.data == "search_code")
 async def process_code(callback: types.CallbackQuery):
-    await callback.message.answer("Anime kodini yuboring (Masalan: 1):")
+    await callback.message.answer("Anime kodini yuboring (Masalan: 1, 2, 3...):")
     await callback.answer()
 
-# --- CHATDA RAKAM YUBORGANDA ---
+@dp.callback_query(F.data == "search_name")
+async def process_name(callback: types.CallbackQuery):
+    await callback.message.answer("Anime nomini yozib yuboring:")
+    await callback.answer()
+
+@dp.callback_query(F.data == "search_genre")
+async def process_genre(callback: types.CallbackQuery):
+    await callback.message.answer("Hozircha janrlar bo'limi to'ldirilmoqda...")
+    await callback.answer()
+
+# --- CHATDA RAKAM YOKI MATN YUBORGANDA ---
 @dp.message(F.text)
 async def handle_text_code(message: types.Message):
-    code = message.text.strip()
+    text = message.text.strip().lower()
     
-    if code in ANIME_DATABASE:
+    # 1 dan 12 gacha raqam yoki "zombi100" / "zom100" yozilsa
+    if text in ANIME_DATABASE:
+        code = text
         await message.answer_video(
             video=ANIME_DATABASE[code],
             caption=get_anime_caption(code),
             reply_markup=get_episodes_keyboard(),
             parse_mode=ParseMode.MARKDOWN
         )
+    elif "zom" in text or "zombi" in text:
+        await message.answer_video(
+            video=ANIME_DATABASE["1"],
+            caption=get_anime_caption("1"),
+            reply_markup=get_episodes_keyboard(),
+            parse_mode=ParseMode.MARKDOWN
+        )
     else:
-        await message.answer("❌ Bu kod bo'yicha anime qismi topilmadi. Qism raqamini to'g'ri kiriting (1 dan 12 gacha).")
+        await message.answer("❌ Bu kod bo'yicha anime topilmadi. Kodni tekshirib qayta yuboring.")
 
-# --- INLINE TUGMALAR BOSILGANDA ---
+# --- INLINE QISM TUGMALARI BOSILGANDA ---
 @dp.callback_query(F.data.startswith("ep_"))
 async def send_episode(callback: types.CallbackQuery):
     ep_num = callback.data.split("_")[1]
