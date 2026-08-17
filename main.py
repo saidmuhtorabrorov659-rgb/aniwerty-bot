@@ -1,5 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher, types, F
+from aiogram.enums import ParseMode
 from aiogram.filters import CommandObject, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import BOT_TOKEN
@@ -7,7 +8,7 @@ from config import BOT_TOKEN
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# Zombi 100 qismlarining tayyor file_id bazasi
+# Zombi 100 qismlarining file_id bazasi
 ANIME_DATABASE = {
     "1": "BAACAgIAAxkBAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
     "2": "BAACAgIAAxkBAAPAaoMrWNwYYARcEa-4NDygo9zwOLYAAjgyAAJGZyBKOYvpww2Wqu89BA",
@@ -22,6 +23,19 @@ ANIME_DATABASE = {
     "11": "BAACAgIAAxkBAAPJaoMrWKqmMuZLE02W7t5IlCz6psMAAp5AAAJ-1WhImMLnoZob7cM9BA",
     "12": "BAACAgIAAxkBAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
 }
+
+# Opisaniya matnini tayyorlaydigan funksiya
+def get_anime_caption(ep_num: str) -> str:
+    return (
+        f"🎬 *Anime:* Zombi 100: O'lim oldi roʻyxat\n"
+        f"📌 *Qism:* {ep_num}-qism\n"
+        f"🎥 *Qismlar soni:* 12\n"
+        f"🇺🇿 *Tili:* O'zbekcha\n"
+        f"🎭 *Janri:* Komediya, Ekshn, Sarguzasht\n"
+        f"🟢 *Holati:* Tugagan\n\n"
+        f"📢 *Kanal:* @aniwertyn1\n\n"
+        f"👇 *Boshqa qismlarni tomosha qilish uchun tanlang:*"
+    )
 
 def get_episodes_keyboard():
     return InlineKeyboardMarkup(
@@ -50,19 +64,19 @@ def get_episodes_keyboard():
         ]
     )
 
-# --- START HANDLER (Deep linking va oddiy start) ---
+# --- START HANDLER ---
 @dp.message(Command("start"))
 async def start_handler(message: types.Message, command: CommandObject):
     args = command.args
 
-    # Telegram havolasidan kelganda (masalan ?start=1 yoki ?start=zombi100)
     if args:
         code = "1" if args in ["1", "zombi100"] else args
         if code in ANIME_DATABASE:
             await message.answer_video(
                 video=ANIME_DATABASE[code],
-                caption=f"🎬 **Zombi 100: O'lim oldi roʻyxat – {code}-qism**\n\n👇 Boshqa qismlarni tanlang:",
-                reply_markup=get_episodes_keyboard()
+                caption=get_anime_caption(code),
+                reply_markup=get_episodes_keyboard(),
+                parse_mode=ParseMode.MARKDOWN
             )
             return
 
@@ -79,7 +93,7 @@ async def process_code(callback: types.CallbackQuery):
     await callback.message.answer("Anime kodini yuboring (Masalan: 1):")
     await callback.answer()
 
-# --- CHATDA RAKAM YUBORGANDA (1, 2, 3...) ---
+# --- CHATDA RAKAM YUBORGANDA ---
 @dp.message(F.text)
 async def handle_text_code(message: types.Message):
     code = message.text.strip()
@@ -87,8 +101,9 @@ async def handle_text_code(message: types.Message):
     if code in ANIME_DATABASE:
         await message.answer_video(
             video=ANIME_DATABASE[code],
-            caption=f"🎬 **Zombi 100: O'lim oldi roʻyxat – {code}-qism**\n\n👇 Boshqa qismlarni tanlang:",
-            reply_markup=get_episodes_keyboard()
+            caption=get_anime_caption(code),
+            reply_markup=get_episodes_keyboard(),
+            parse_mode=ParseMode.MARKDOWN
         )
     else:
         await message.answer("❌ Bu kod bo'yicha anime qismi topilmadi. Qism raqamini to'g'ri kiriting (1 dan 12 gacha).")
@@ -101,8 +116,9 @@ async def send_episode(callback: types.CallbackQuery):
     if ep_num in ANIME_DATABASE:
         await callback.message.answer_video(
             video=ANIME_DATABASE[ep_num],
-            caption=f"🎬 **Zombi 100: O'lim oldi roʻyxat – {ep_num}-qism**\n\n👇 Boshqa qismlarni tanlang:",
-            reply_markup=get_episodes_keyboard()
+            caption=get_anime_caption(ep_num),
+            reply_markup=get_episodes_keyboard(),
+            parse_mode=ParseMode.MARKDOWN
         )
     await callback.answer()
 
