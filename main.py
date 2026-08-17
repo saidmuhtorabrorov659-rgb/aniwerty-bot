@@ -36,8 +36,7 @@ async def process_genre(callback: types.CallbackQuery):
     await callback.answer()
 
 async def main():
-    # Eski webhooklarni to'liq tozalaymiz
-    await bot.delete_webhook(drop_pending_updates=True)
+    # delete_webhook xatolik bermasligi uchun uni olib tashlaymiz
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
