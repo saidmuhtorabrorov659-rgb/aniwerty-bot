@@ -1,36 +1,35 @@
 import os
-import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 from config import BOT_TOKEN
+
+# Render beradigan domen URL manzili
+RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://aniwerty-bot-2.onrender.com")
+WEBHOOK_PATH = f"/webhook/{BOT_TOKEN}"
+WEBHOOK_URL = f"{RENDER_EXTERNAL_URL}{WEBHOOK_PATH}"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 # =============================================================
-# OLDINGI INTERFEYS (INLINE TUGMALAR)
+# HANDLERLAR
 # =============================================================
 
 @dp.message(Command("start"))
 async def start_handler(message: types.Message):
-    # Oldingi chiroyli Inline menyu
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_code")],
             [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_name")],
             [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="select_genre")],
-            # Kanal havolasini o'zingizning kanalingiz havolasiga almashtiring
-            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
+            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/KanalizingizNomi")]
         ]
     )
-    await message.answer(
-        "Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
-        reply_markup=keyboard
-    )
+    await message.answer("Kerakli bo'limni tanlang yoki anime kodini yuboring 👇", reply_markup=keyboard)
 
-# Inline tugmalar bosilganda javob berish
 @dp.callback_query(lambda c: c.data == "search_code")
 async def process_code(callback: types.CallbackQuery):
     await callback.message.answer("Anime kodini yuboring (Masalan: 1, 2, 3...):")
@@ -47,26 +46,23 @@ async def process_genre(callback: types.CallbackQuery):
     await callback.answer()
 
 # =============================================================
-# RENDER WEB SERVER QISMI
+# WEBHOOK SOZLAMASI
 # =============================================================
 
-async def handle(request):
-    return web.Response(text="Bot running successfully!")
+async def on_startup(bot: Bot):
+    await bot.set_webhook(WEBHOOK_URL)
 
-async def start_web_server():
+def main():
+    dp.startup.register(on_startup)
     app = web.Application()
-    app.router.add_get("/", handle)
-    runner = web.AppRunner(app)
-    await runner.setup()
+    
+    webhook_requests_handler = SimpleRequestHandler(dispatcher=dp, bot=bot)
+    webhook_requests_handler.register(app, path=WEBHOOK_PATH)
+    
+    setup_application(app, dp, bot=bot)
     
     port = int(os.environ.get("PORT", 10000))
-    site = web.TCPSite(runner, "0.0.0.0", port)
-    await site.start()
-
-async def main():
-    await start_web_server()
-    print("@AniWerty_bot muammosiz ishga tushdi...")
-    await dp.start_polling(bot)
+    web.run_app(app, host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
