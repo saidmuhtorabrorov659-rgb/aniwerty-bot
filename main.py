@@ -7,7 +7,7 @@ from config import BOT_TOKEN
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# Zombi 100 qismlari file_id bazasi
+# Zombi 100 qismlarining tayyor file_id bazasi
 ANIME_DATABASE = {
     "1": "BAACAgIAAxkBAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
     "2": "BAACAgIAAxkBAAPAaoMrWNwYYARcEa-4NDygo9zwOLYAAjgyAAJGZyBKOYvpww2Wqu89BA",
@@ -23,9 +23,8 @@ ANIME_DATABASE = {
     "12": "BAACAgIAAxkBAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
 }
 
-# Qismlar uchun knopkalar yaratuvchi funksiya
 def get_episodes_keyboard():
-    keyboard = InlineKeyboardMarkup(
+    return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(text="1-qism", callback_data="ep_1"),
@@ -50,26 +49,51 @@ def get_episodes_keyboard():
             ]
         ]
     )
-    return keyboard
 
-# --- START VA DEEP LINKING HANDLER ---
+# --- START HANDLER (Deep linking va oddiy start) ---
 @dp.message(Command("start"))
 async def start_handler(message: types.Message, command: CommandObject):
     args = command.args
 
-    # Agar kanaldan "Tomosha qilish" (zombi100) deb kelinsa
-    if args == "zombi100" or args == "1":
+    # Telegram havolasidan kelganda (masalan ?start=1 yoki ?start=zombi100)
+    if args:
+        code = "1" if args in ["1", "zombi100"] else args
+        if code in ANIME_DATABASE:
+            await message.answer_video(
+                video=ANIME_DATABASE[code],
+                caption=f"🎬 **Zombi 100: O'lim oldi roʻyxat – {code}-qism**\n\n👇 Boshqa qismlarni tanlang:",
+                reply_markup=get_episodes_keyboard()
+            )
+            return
+
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_code")],
+            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
+        ]
+    )
+    await message.answer("Xush kelibsiz! Anime qismini ko'rish uchun kodingizni yuboring:", reply_markup=keyboard)
+
+@dp.callback_query(F.data == "search_code")
+async def process_code(callback: types.CallbackQuery):
+    await callback.message.answer("Anime kodini yuboring (Masalan: 1):")
+    await callback.answer()
+
+# --- CHATDA RAKAM YUBORGANDA (1, 2, 3...) ---
+@dp.message(F.text)
+async def handle_text_code(message: types.Message):
+    code = message.text.strip()
+    
+    if code in ANIME_DATABASE:
         await message.answer_video(
-            video=ANIME_DATABASE["1"],
-            caption="🎬 **Zombi 100: O'lim oldi roʻyxat – 1-qism**\n\n👇 Boshqa qismlarni tanlang:",
+            video=ANIME_DATABASE[code],
+            caption=f"🎬 **Zombi 100: O'lim oldi roʻyxat – {code}-qism**\n\n👇 Boshqa qismlarni tanlang:",
             reply_markup=get_episodes_keyboard()
         )
-        return
+    else:
+        await message.answer("❌ Bu kod bo'yicha anime qismi topilmadi. Qism raqamini to'g'ri kiriting (1 dan 12 gacha).")
 
-    # Oddiy start bosilganda
-    await message.answer("Xush kelibsiz! Anime qismini ko'rish uchun anime kodini yuboring yoki havoladan kiring.")
-
-# --- INLINE TUGMALAR BOSILGANDA QISM CHIQARISH ---
+# --- INLINE TUGMALAR BOSILGANDA ---
 @dp.callback_query(F.data.startswith("ep_"))
 async def send_episode(callback: types.CallbackQuery):
     ep_num = callback.data.split("_")[1]
