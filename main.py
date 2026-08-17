@@ -7,6 +7,7 @@ from config import BOT_TOKEN
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
+# --- HANDLERLAR ---
 @dp.message(Command("start"))
 async def start_handler(message: types.Message):
     keyboard = InlineKeyboardMarkup(
@@ -14,7 +15,7 @@ async def start_handler(message: types.Message):
             [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_code")],
             [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_name")],
             [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="select_genre")],
-            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/KanalizingizNomi")]
+            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
         ]
     )
     await message.answer("Kerakli bo'limni tanlang yoki anime kodini yuboring 👇", reply_markup=keyboard)
@@ -35,6 +36,7 @@ async def process_genre(callback: types.CallbackQuery):
     await callback.answer()
 
 async def main():
+    # Eski webhooklarni to'liq tozalaymiz
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
