@@ -30,7 +30,7 @@ ANIME_DATABASE = {
             "12": "BAACAgIAAxkBAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
         }
     },
-    # 2 - Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim
+    # 2 - Akademiyaning birinchi raqamli boy qiziga...
     "2": {
         "title": "Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim",
         "total": 6,
@@ -91,17 +91,24 @@ async def catch_video_file_id(message: types.Message):
     file_id = message.video.file_id
     await message.reply(f"📁 **Video File ID:**\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
 
-# --- START HANDLER ---
+# --- START HANDLER (To'g'rilangan) ---
 @dp.message(Command("start"))
 async def start_handler(message: types.Message, command: CommandObject):
     args = command.args
 
     if args:
-        if args in ANIME_DATABASE:
+        # Kod tekshirish logic'i
+        anime_key = None
+        if args == "zombi100":
+            anime_key = "1"
+        elif args in ANIME_DATABASE:
+            anime_key = args
+
+        if anime_key:
             await message.answer_video(
-                video=ANIME_DATABASE[args]["episodes"]["1"],
-                caption=get_anime_caption(args, "1"),
-                reply_markup=get_episodes_keyboard(args),
+                video=ANIME_DATABASE[anime_key]["episodes"]["1"],
+                caption=get_anime_caption(anime_key, "1"),
+                reply_markup=get_episodes_keyboard(anime_key),
                 parse_mode=ParseMode.MARKDOWN
             )
             return
