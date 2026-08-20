@@ -73,6 +73,12 @@ def get_episodes_keyboard():
         ]
     )
 
+# --- VIDEO YUBORILGANDA FILE_ID Nl CHIQARISH ---
+@dp.message(F.video)
+async def catch_video_file_id(message: types.Message):
+    file_id = message.video.file_id
+    await message.reply(f"📁 **Video File ID:**\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
+
 # --- START HANDLER ---
 @dp.message(Command("start"))
 async def start_handler(message: types.Message, command: CommandObject):
@@ -115,7 +121,6 @@ async def process_genre(callback: types.CallbackQuery):
 async def handle_text_code(message: types.Message):
     text = message.text.strip().lower()
     
-    # 1 dan 12 gacha raqam yoki "zombi100" / "zom100" yozilsa
     if text in ANIME_DATABASE:
         code = text
         await message.answer_video(
