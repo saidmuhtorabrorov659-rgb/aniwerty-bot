@@ -5,13 +5,10 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandObject, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# Tokenni config faylidan emas, to'g'ridan-to'g'ri Railway muhitidan (Variables) olamiz
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
-
-# ... (Kodingning qolgan qismi o'zgarishsiz qoladi)
 
 # Anime ma'lumotlari va qismlarining file_id bazasi
 ANIME_DATABASE = {
@@ -138,27 +135,19 @@ async def start_handler(message: types.Message, command: CommandObject):
             return
 
     await message.answer(
-        "Kerakli bo'limni tanlang yoki anime kodini yuboring 👇\n\n"
-        "1 — Zombi 100\n"
-        "2 — Akademiyaning birinchi raqamli boy qiziga...\n"
-        "3 — Arra-odam (Chainsaw Man)",
+        "Xush kelibsiz! Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
         reply_markup=get_main_keyboard()
     )
 
 # --- MENYU TUGMALARI ---
 @dp.callback_query(F.data == "search_code")
 async def process_code(callback: types.CallbackQuery):
-    await callback.message.answer(
-        "Anime kodini yuboring:\n\n"
-        "1 — Zombi 100\n"
-        "2 — Akademiyaning birinchi raqamli boy qiziga...\n"
-        "3 — Arra-odam (Chainsaw Man)"
-    )
+    await callback.message.answer("Kerakli anime kodini yuboring 🔢")
     await callback.answer()
 
 @dp.callback_query(F.data == "search_name")
 async def process_name(callback: types.CallbackQuery):
-    await callback.message.answer("Anime nomini yozib yuboring:")
+    await callback.message.answer("Anime nomini yozib yuboring 🔍")
     await callback.answer()
 
 @dp.callback_query(F.data == "search_genre")
