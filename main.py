@@ -1,12 +1,17 @@
+import os
 import asyncio
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandObject, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from config import BOT_TOKEN
+
+# Tokenni config faylidan emas, to'g'ridan-to'g'ri Railway muhitidan (Variables) olamiz
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
+
+# ... (Kodingning qolgan qismi o'zgarishsiz qoladi)
 
 # Anime ma'lumotlari va qismlarining file_id bazasi
 ANIME_DATABASE = {
