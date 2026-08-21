@@ -172,22 +172,29 @@ async def process_genre(callback: types.CallbackQuery):
 
 # --- CHATDA KOD YUBORGANDA ---
 @dp.message(F.text)
-async def handle_text_code(message: types.Message):
-    user_code = message.text.strip()
+import os
+from aiohttp import web
+
+# Render web-service o'chib qolmasligi uchun ping sahifasi
+async def handle(request):
+    return web.Response(text="Bot faol ishlamoqda!")
+
+async def start_web_server():
+    app = web.Application()
+    app.router.add_get("/", handle)
+    runner = web.AppRunner(app)
+    await runner.setup()
     
-    if user_code == "1":
-        await message.answer("🎬 **Zombi 100: O'lim oldi ro'yxat** — Qismlar:", reply_markup=get_zom100_menu())
-    elif user_code == "2":
-        await message.answer("🎬 **Akademiyaning birinchi raqamli boy qizi...** — Qismlar:", reply_markup=get_boyqiz_menu())
-    elif user_code == "3":
-        await message.answer("🎬 **Arra-odam (Chainsaw Man)** — Qismlar:", reply_markup=get_chainsaw_menu())
-    elif user_code in ANIME_DATABASE:
-        anime_data = ANIME_DATABASE[user_code]
-        await message.answer_video(video=anime_data["file_id"], caption=f"🎬 **{anime_data['title']}**\n📢 @aniwertyn1")
-    else:
-        await message.answer("❌ Bu kod bo'yicha anime topilmadi.")
+    # Render avto-taqdim etadigan PORT ni olish
+    port = int(os.environ.get("PORT", 10000))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
 
 async def main():
+    # Web serverni orqa fonda yurgizish
+    await start_web_server()
+    
+    # Bot pollingini boshlash
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
