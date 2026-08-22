@@ -66,12 +66,11 @@ ANIME_DATABASE = {
     }
 }
 
-def get_main_menu():
+def get_main_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_by_code")],
-        [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_by_name")],
-        [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="select_genre")],
-        [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
+        [InlineKeyboardButton(text="⚡ Arra Odam (Chainsaw Man)", callback_data="anime_3")],
+        [InlineKeyboardButton(text="🧟 Zombi 100", callback_data="anime_1")],
+        [InlineKeyboardButton(text="🎬 Akademiyaning birinchi raqamli boy qiziga...", callback_data="anime_2")]
     ])
 
 def get_episodes_keyboard(anime_key: str):
@@ -91,47 +90,24 @@ def get_episodes_keyboard(anime_key: str):
 @dp.message(CommandStart())
 async def start_cmd(message: types.Message):
     await message.answer(
-        "Xush kelibsiz! Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
-        reply_markup=get_main_menu(),
+        "👋 **Xush kelibsiz!**\nKerakli animeni tanlang:",
+        reply_markup=get_main_keyboard(),
         parse_mode=ParseMode.MARKDOWN
     )
 
-@dp.callback_query(F.data == "search_by_code")
-async def search_code_cb(callback: types.CallbackQuery):
-    text = "🔢 **Mavjud animelar va kodlari:**\n\n"
-    for code, data in ANIME_DATABASE.items():
-        text += f"Kodi: `{code}` — {data['title']}\n"
-    text += "\nKerakli anime kodini yuboring (masalan: `3`):"
-    await callback.message.edit_text(text, parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_main")]
-    ]))
+@dp.callback_query(F.data.startswith("anime_"))
+async def show_anime(callback: types.CallbackQuery):
+    anime_key = callback.data.split("_")[1]
+    anime = ANIME_DATABASE[anime_key]
+    text = f"🎬 **{anime['title']}**\n\n📌 **Janr:** {anime['genre']}\n🔢 **Qismlar soni:** {anime['total']} ta\n\nQismni tanlang:"
+    await callback.message.edit_text(text, reply_markup=get_episodes_keyboard(anime_key), parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
-
-@dp.callback_query(F.data == "search_by_name")
-async def search_name_cb(callback: types.CallbackQuery):
-    await callback.message.answer("Anime nomini yozib yuboring 🔍")
-    await callback.answer()
-
-@dp.callback_query(F.data == "select_genre")
-async def genre_cb(callback: types.CallbackQuery):
-    await callback.message.answer("Janrni tanlang 🎭")
-    await callback.answer()
-
-@dp.message(F.text)
-async def handle_code_input(message: types.Message):
-    code = message.text.strip()
-    if code in ANIME_DATABASE:
-        anime = ANIME_DATABASE[code]
-        text = f"🎬 **{anime['title']}**\n\n📌 **Janr:** {anime['genre']}\n🔢 **Qismlar soni:** {anime['total']} ta\n\nQismni tanlang:"
-        await message.answer(text, reply_markup=get_episodes_keyboard(code), parse_mode=ParseMode.MARKDOWN)
-    else:
-        await message.answer("⚠️ Bunday kodli anime topilmadi!")
 
 @dp.callback_query(F.data.startswith("ep_"))
 async def send_episode(callback: types.CallbackQuery):
     parts = callback.data.split("_")
     anime_key = parts[1]
-    ep_num = parts[2]  # Endi 10, 11, 12, 13 ham to'g'ri ishlaydi
+    ep_num = parts[2]
     
     file_id = ANIME_DATABASE.get(anime_key, {}).get("episodes", {}).get(ep_num)
     
@@ -148,8 +124,8 @@ async def send_episode(callback: types.CallbackQuery):
 @dp.callback_query(F.data == "back_to_main")
 async def back_to_main(callback: types.CallbackQuery):
     await callback.message.edit_text(
-        "Xush kelibsiz! Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
-        reply_markup=get_main_menu(),
+        "👋 **Xush kelibsiz!**\nKerakli animeni tanlang:",
+        reply_markup=get_main_keyboard(),
         parse_mode=ParseMode.MARKDOWN
     )
     await callback.answer()
