@@ -5,30 +5,30 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-TOKEN = "8896707660:AAEWygEMyoW-jLSTYzoYq5gD9bkBRjg3os0" # O'zingning tokening
+TOKEN = "8896707660:AAGZ7CpCTVXhiDJFfcycOT_YRyFvC3wU5RE"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# To'liq anime bazasi
+# To'liq anime bazasi (o'zing bergan kodlar bilan)
 ANIME_DATABASE = {
     "1": {
         "title": "Zombi 100",
         "total": 12,
         "genre": "Komediya, Ekshn",
         "episodes": {
-         "1": "BAACAgIAAxkBAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
-            "2": "BAACAgIAAxkBAAPAaoMrWNwYYARcEa-4NDygo9zwOLYAAjgyAAJGZyBKOYvpww2Wqu89BA",
-            "3": "BAACAgIAAxkBAAPBaoMrWKpeL_TdQ8fPnOSfDkJjWRAAAoItAAJ0qFhKPF6o7oaFIiA9BA",
-            "4": "BAACAgIAAxkBAAPCaoMrWPDNS-fiJhh3ZCDZOEWz74UAAts7AALTfeBKDD-6jImythI9BA",
-            "5": "BAACAgIAAxkBAAPDaoMrWDIAAVyYCgVp5IzlKqczn7UJAAL_MwACmTM4S2AoXyPKNBDrPQQ",
-            "6": "BAACAgIAAxkBAAPEaoMrWC494xPJnJ4mFunfszXBOOMAAp43AAKeybhLOjn6sYqZE0Q9BA",
-            "7": "BAACAgIAAxkBAAPFaoMrWDZcQ7xry1M-FCsDfRkK5gUAAqs0AALxLnlIQA1xqWBJPG09BA",
-            "8": "BAACAgIAAxkBAAPGaoMrWDPq0re9FfptyQRwOqHUx1AAArE0AALxLnlI3fXJzO3flk49BA",
-            "9": "BAACAgIAAxkBAAPHaoMrWCV3ZCJbkMZjPCC6srOHFhcAAvU9AAK8n5FIjtqGPUpNbuA9BA",
-            "10": "BAACAgIAAxkBAAPIaoMrWDg6OUZF1SRmu13HNIAOjf4AAq9CAAJ9wlFIL_Vc04HNKi09BA",
-            "11": "BAACAgIAAxkBAAPJaoMrWKqmMuZLE02W7t5IlCz6psMAAp5AAAJ-1WhImMLnoZob7cM9BA",
-            "12": "BAACAgIAAxkBAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
+            "1": "BAACAgIAAxkDAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
+            "2": "BAACAgIAAxkDAAPAaoMrWNwYYARcEa-4NDygo9zwOLYAAjgyAAJGZyBKOYvpww2Wqu89BA",
+            "3": "BAACAgIAAxkDAAPBaoMrWKpeL_TdQ8fPnOSfDkJjWRAAAoItAAJ0qFhKPF6o7oaFIiA9BA",
+            "4": "BAACAgIAAxkDAAPCaoMrWPDNS-fiJhh3ZCDZOEWz74UAAts7AALTfeBKDD-6jImythI9BA",
+            "5": "BAACAgIAAxkDAAPDaoMrWDIAAVyYCgVp5IzlKqczn7UJAAL_MwACmTM4S2AoXyPKNBDrPQQ",
+            "6": "BAACAgIAAxkDAAPEaoMrWC494xPJnJ4mFunfszXBOOMAAp43AAKeybhLOjn6sYqZE0Q9BA",
+            "7": "BAACAgIAAxkDAAPFaoMrWDZcQ7xry1M-FCsDfRkK5gUAAqs0AALxLnlIQA1xqWBJPG09BA",
+            "8": "BAACAgIAAxkDAAPGaoMrWDPq0re9FfptyQRwOqHUx1AAArE0AALxLnlI3fXJzO3flk49BA",
+            "9": "BAACAgIAAxkDAAPHaoMrWCV3ZCJbkMZjPCC6srOHFhcAAvU9AAK8n5FIjtqGPUpNbuA9BA",
+            "10": "BAACAgIAAxkDAAPIaoMrWDg6OUZF1SRmu13HNIAOjf4AAq9CAAJ9wlFIL_Vc04HNKi09BA",
+            "11": "BAACAgIAAxkDAAPJaoMrWKqmMuZLE02W7t5IlCz6psMAAp5AAAJ-1WhImMLnoZob7cM9BA",
+            "12": "BAACAgIAAxkDAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
         }
     },
     "2": {
@@ -36,11 +36,11 @@ ANIME_DATABASE = {
         "total": 12,
         "genre": "Romantika",
         "episodes": {
-           "1": "BAACAgIAAxkBAAIBVmqG6uCIBQx6ZzcPotiUSZN-lPxCAAIapgAC51hoSjssBuD_2phrPQQ",
-            "2": "BAACAgIAAxkBAAIBV2qG6vI62sHwPoaZWI30u-65AAFNoAACapsAAjItoEoaVkHC4Zv7ED0E",
-            "3": "BAACAgIAAxkBAAIBWGqG6vZ3dtf7S9YdFLKmpjop49mDAAIErwAC38noSp0cgRXrYWllPQQ",
-            "4": "BAACAgIAAxkBAAIBWWqG6vuVr1X0Ygr3Wt2TmcXZAAEa0QACBKgAAhhdQUuGwUSkz1vu0z0E",
-            "5": "BAACAgIAAxkBAAIBWmqG6wSOq_hvZuPVA3c3oX2FjyE7AALoqgAC3C2AS5COMOI9-bHyPQQ",
+            "1": "BAACAgIAAxkDAAIBVmqG6uCIBQx6ZzcPotiUSZN-lPxCAAIapgAC51hoSjssBuD_2phrPQQ",
+            "2": "BAACAgIAAxkDAAIBV2qG6vI62sHwPoaZWI30u-65AAFNoAACapsAAjItoEoaVkHC4Zv7ED0E",
+            "3": "BAACAgIAAxkDAAIBWGqG6vZ3dtf7S9YdFLKmpjop49mDAAIErwAC38noSp0cgRXrYWllPQQ",
+            "4": "BAACAgIAAxkDAAIBWWqG6vuVr1X0Ygr3Wt2TmcXZAAEa0QACBKgAAhhdQUuGwUSkz1vu0z0E",
+            "5": "BAACAgIAAxkDAAIBWmqG6wSOq_hvZuPVA3c3oX2FjyE7AALoqgAC3C2AS5COMOI9-bHyPQQ",
             "6": "BAACAgQAAxkBAAIBW2qG6wtI9O-ZDH0YTWDBTW0iTo3_AAJZHgACF6LoUz3imBALBhDOPQQ"
         }
     },
@@ -66,19 +66,22 @@ ANIME_DATABASE = {
     }
 }
 
-def get_main_keyboard():
+# Asosiy menyu (2-rasmdagidek)
+def get_main_menu():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=" Arra Odam (Chainsaw Man)", callback_data="anime_3")],
-        [InlineKeyboardButton(text=" Zombi 100", callback_data="anime_1")],
-        [InlineKeyboardButton(text=" Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim", callback_data="anime_2")]
+        [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_by_code")],
+        [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_by_name")],
+        [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="select_genre")],
+        [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
     ])
 
+# Qismlar menyusi
 def get_episodes_keyboard(anime_key: str):
     anime = ANIME_DATABASE[anime_key]
     buttons = []
     row = []
     for ep_num in range(1, anime["total"] + 1):
-        row.append(InlineKeyboardButton(text=str(ep_num), callback_data=f"ep_{anime_key}_{ep_num}"))
+        row.append(InlineKeyboardButton(text=f"{ep_num}", callback_data=f"ep_{anime_key}_{ep_num}"))
         if len(row) == 4:
             buttons.append(row)
             row = []
@@ -90,18 +93,41 @@ def get_episodes_keyboard(anime_key: str):
 @dp.message(CommandStart())
 async def start_cmd(message: types.Message):
     await message.answer(
-        "👋 **Xush kelibsiz!**\nKerakli animeni tanlang:",
-        reply_markup=get_main_keyboard(),
+        "Xush kelibsiz! Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
+        reply_markup=get_main_menu(),
         parse_mode=ParseMode.MARKDOWN
     )
 
-@dp.callback_query(F.data.startswith("anime_"))
-async def show_anime(callback: types.CallbackQuery):
-    anime_key = callback.data.split("_")[1]
-    anime = ANIME_DATABASE[anime_key]
-    text = f"🎬 **{anime['title']}**\n\n📌 **Janr:** {anime['genre']}\n🔢 **Qismlar soni:** {anime['total']} ta\n\nQismni tanlang:"
-    await callback.message.edit_text(text, reply_markup=get_episodes_keyboard(anime_key), parse_mode=ParseMode.MARKDOWN)
+@dp.callback_query(F.data == "search_by_code")
+async def search_code_cb(callback: types.CallbackQuery):
+    text = "🔢 **Mavjud animelar va kodlari:**\n\n"
+    for code, data in ANIME_DATABASE.items():
+        text += f"Kodi: `{code}` — {data['title']}\n"
+    text += "\nKerakli anime kodini yuboring (masalan: `3`):"
+    await callback.message.edit_text(text, parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_main")]
+    ]))
     await callback.answer()
+
+@dp.callback_query(F.data == "search_by_name")
+async def search_name_cb(callback: types.CallbackQuery):
+    await callback.message.answer("Anime nomini yozib yuboring 🔍")
+    await callback.answer()
+
+@dp.callback_query(F.data == "select_genre")
+async def genre_cb(callback: types.CallbackQuery):
+    await callback.message.answer("Janrni tanlang 🎭")
+    await callback.answer()
+
+@dp.message(F.text)
+async def handle_code_input(message: types.Message):
+    code = message.text.strip()
+    if code in ANIME_DATABASE:
+        anime = ANIME_DATABASE[code]
+        text = f"🎬 **{anime['title']}**\n\n📌 **Janr:** {anime['genre']}\n🔢 **Qismlar soni:** {anime['total']} ta\n\nQismni tanlang:"
+        await message.answer(text, reply_markup=get_episodes_keyboard(code), parse_mode=ParseMode.MARKDOWN)
+    else:
+        await message.answer("⚠️ Bunday kodli anime topilmadi!")
 
 @dp.callback_query(F.data.startswith("ep_"))
 async def send_episode(callback: types.CallbackQuery):
@@ -121,8 +147,8 @@ async def send_episode(callback: types.CallbackQuery):
 @dp.callback_query(F.data == "back_to_main")
 async def back_to_main(callback: types.CallbackQuery):
     await callback.message.edit_text(
-        "👋 **Xush kelibsiz!**\nKerakli animeni tanlang:",
-        reply_markup=get_main_keyboard(),
+        "Xush kelibsiz! Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
+        reply_markup=get_main_menu(),
         parse_mode=ParseMode.MARKDOWN
     )
     await callback.answer()
