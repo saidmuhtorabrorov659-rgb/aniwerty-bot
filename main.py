@@ -1,24 +1,23 @@
-import os
-import asyncio
-from aiogram import Bot, Dispatcher, types, F
+import logging
+import sys
+from aiogram import Bot, Dispatcher, F, types
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandObject, Command
+from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+TOKEN = "8896707660:AAHv1n_..." # O'zingning tokening
 
-bot = Bot(token=BOT_TOKEN)
+bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# Anime ma'lumotlari va qismlarining file_id bazasi
+# To'liq anime bazasi
 ANIME_DATABASE = {
-    # 1 - Zombi 100
     "1": {
-        "title": "Zombi 100: O'lim oldi roʻyxat",
+        "title": "Zombi 100",
         "total": 12,
-        "genre": "Komediya, Ekshn, Sarguzasht",
+        "genre": "Komediya, Ekshn",
         "episodes": {
-            "1": "BAACAgIAAxkBAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
+         "1": "BAACAgIAAxkBAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
             "2": "BAACAgIAAxkBAAPAaoMrWNwYYARcEa-4NDygo9zwOLYAAjgyAAJGZyBKOYvpww2Wqu89BA",
             "3": "BAACAgIAAxkBAAPBaoMrWKpeL_TdQ8fPnOSfDkJjWRAAAoItAAJ0qFhKPF6o7oaFIiA9BA",
             "4": "BAACAgIAAxkBAAPCaoMrWPDNS-fiJhh3ZCDZOEWz74UAAts7AALTfeBKDD-6jImythI9BA",
@@ -32,13 +31,12 @@ ANIME_DATABASE = {
             "12": "BAACAgIAAxkBAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
         }
     },
-    # 2 - Akademiyaning birinchi raqamli boy qiziga...
     "2": {
         "title": "Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim",
-        "total": 6,
-        "genre": "Romantika, Maktab, Komediya",
+        "total": 12,
+        "genre": "Romantika",
         "episodes": {
-            "1": "BAACAgIAAxkBAAIBVmqG6uCIBQx6ZzcPotiUSZN-lPxCAAIapgAC51hoSjssBuD_2phrPQQ",
+           "1": "BAACAgIAAxkBAAIBVmqG6uCIBQx6ZzcPotiUSZN-lPxCAAIapgAC51hoSjssBuD_2phrPQQ",
             "2": "BAACAgIAAxkBAAIBV2qG6vI62sHwPoaZWI30u-65AAFNoAACapsAAjItoEoaVkHC4Zv7ED0E",
             "3": "BAACAgIAAxkBAAIBWGqG6vZ3dtf7S9YdFLKmpjop49mDAAIErwAC38noSp0cgRXrYWllPQQ",
             "4": "BAACAgIAAxkBAAIBWWqG6vuVr1X0Ygr3Wt2TmcXZAAEa0QACBKgAAhhdQUuGwUSkz1vu0z0E",
@@ -46,168 +44,90 @@ ANIME_DATABASE = {
             "6": "BAACAgQAAxkBAAIBW2qG6wtI9O-ZDH0YTWDBTW0iTo3_AAJZHgACF6LoUz3imBALBhDOPQQ"
         }
     },
-    # 3 - Arra-odam (Chainsaw Man)
-   "3": {
-        "title": "Arra Odam ",
+    "3": {
+        "title": "Arra Odam (Chainsaw Man)",
         "total": 13,
         "genre": "Ekshn, Qorong'u Fentezi, Shounen",
         "episodes": {
             "1": "BAACAgIAAxkDAAIB7mqJQdvtq0_8TqJX0MkL7PFL7zsYAAIDHwACXKNZs8JjwrjcGI_PQQ",
             "2": "BAACAgIAAxkDAAIB72qJYXtAaYpxoqtecyI5JwAB7MdPpAgACfYMAA1t1YEu81jQzi6--ID0E",
-            "3": "BAACAgIAAxkBAAICWqJnunHnWC6RxmqAWiWyEX33asAAIEIgACLYgQSzoDERkp59oHPQQ",
-            "4": "BAACAgIAAxkBAAIC2qJnuzCir_Tqcc603qAQcskk95caAJyIgAcQNGgS0hxS1xKQdYVPQQ",
-            "5": "BAACAgIAAxkBAAICWqJnxH6rmNIQfsoB9qR0cN-vmhnAAK0IQACPaWBSwqr39AAAbW05D0E",
-            "6": "BAACAgIAAxkBAAICJ2qJnxcmlwXLARgTveGY0410YP2hAaAMEAAJE8flLmyi689aRjA9BA",
-            "7": "BAACAgIAAxkBAAICKWqJnxtfJgLeUKV61WTLuAAB_Oxx8wACgyMAAj50IEg_kp_3DD3dLTr0E",
-            "8": "BAACAgIAAxkBAAICK2qJnx9mUp34Qbk_z_RuJQyg1m2wAAIZKQAC3DaSvDSAiWvPGdPQQA",
-            "9": "BAACAgIAAxkBAAICLWqJnybZ6pEyCdqEerk32_y-WRyPAAiSNQAC3BAoSH26CMRr7plEPQQ",
-            "10": "BAACAgIAAxkBAAICL2qJnyo5a94Y0t4JJmBrp86hmIBTAAI2NQAC3BAoSFFJQNyPhI3PQQ",
-            "11": "BAACAgIAAxkBAAICMWqJny2ahrLKVfRkEP57reNZuDFIAAJENQAC3BAoS0AuMh1NiQxRPQQ",
-            "12": "BAACAgIAAxkBAAICWqJnYQJYUTipI3bcvscSBvCB_zVtnlAAAJWNQAIC3BAoSMnTmeaus90GPQQ",
-            "13": "BAACAgIAAxkBAAICNWqJnzcvGn80UUZCG9nm6_pLkxV-AAILkgAC80rRSegEI-Ds64PMPQQ"
+            "3": "BAACAgIAAxkDAAICWqJnunHnWC6RxmqAWiWyEX33asAAIEIgACLYgQSzoDERkp59oHPQQ",
+            "4": "BAACAgIAAxkDAAIC2qJnuzCir_Tqcc603qAQcskk95caAJyIgAcQNGgS0hxS1xKQdYVPQQ",
+            "5": "BAACAgIAAxkDAAICWqJnxH6rmNIQfsoB9qR0cN-vmhnAAK0IQACPaWBSwqr39AAAbW05D0E",
+            "6": "BAACAgIAAxkDAAICJ2qJnxcmlwXLARgTveGY0410YP2hAaAMEAAJE8flLmyi689aRjA9BA",
+            "7": "BAACAgIAAxkDAAICKWqJnxtfJgLeUKV61WTLuAAB_Oxx8wACgyMAAj50IEg_kp_3DD3dLTr0E",
+            "8": "BAACAgIAAxkDAAICK2qJnx9mUp34Qbk_z_RuJQyg1m2wAAIZKQAC3DaSvDSAiWvPGdPQQA",
+            "9": "BAACAgIAAxkDAAICLWqJnybZ6pEyCdqEerk32_y-WRyPAAiSNQAC3BAoSH26CMRr7plEPQQ",
+            "10": "BAACAgIAAxkDAAICL2qJnyo5a94Y0t4JJmBrp86hmIBTAAI2NQAC3BAoSFFJQNyPhI3PQQ",
+            "11": "BAACAgIAAxkDAAICMWqJny2ahrLKVfRkEP57reNZuDFIAAJENQAC3BAoS0AuMh1NiQxRPQQ",
+            "12": "BAACAgIAAxkDAAICWqJnYQJYUTipI3bcvscSBvCB_zVtnlAAAJWNQAIC3BAoSMnTmeaus90GPQQ",
+            "13": "BAACAgIAAxkDAAICNWqJnzcvGn80UUZCG9nm6_pLkxV-AAILkgAC80rRSegEI-Ds64PMPQQ"
         }
     }
 }
 
-def get_anime_caption(anime_key: str, ep_num: str) -> str:
-    data = ANIME_DATABASE[anime_key]
-    return (
-        f"🎬 *Anime:* {data['title']}\n"
-        f"📌 *Qism:* {ep_num}-qism\n"
-        f"🎥 *Qismlar soni:* {data['total']}\n"
-        f"🇺🇿 *Tili:* O'zbekcha\n"
-        f"🎭 *Janri:* {data['genre']}\n\n"
-        f"📢 *Kanal:* @aniwertyn1\n\n"
-        f"👇 *Boshqa qismlarni tomosha qilish uchun tanlang:*"
-    )
-
 def get_main_keyboard():
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_code")],
-            [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_name")],
-            [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="search_genre")],
-            [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
-        ]
-    )
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="⚡ Arra Odam (Chainsaw Man)", callback_data="anime_3")],
+        [InlineKeyboardButton(text="🧟 Zombi 100", callback_data="anime_1")],
+        [InlineKeyboardButton(text="🎬 Mening uy bekasi enagam", callback_data="anime_2")]
+    ])
 
 def get_episodes_keyboard(anime_key: str):
-    data = ANIME_DATABASE[anime_key]
-    total = data["total"]
-    
-    keyboard = []
+    anime = ANIME_DATABASE[anime_key]
+    buttons = []
     row = []
-    for i in range(1, total + 1):
-        row.append(InlineKeyboardButton(text=f"{i}-qism", callback_data=f"ep_{anime_key}_{i}"))
+    for ep_num in range(1, anime["total"] + 1):
+        row.append(InlineKeyboardButton(text=str(ep_num), callback_data=f"ep_{anime_key}_{ep_num}"))
         if len(row) == 4:
-            keyboard.append(row)
+            buttons.append(row)
             row = []
     if row:
-        keyboard.append(row)
-        
-    keyboard.append([InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")])
-    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+        buttons.append(row)
+    buttons.append([InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_main")])
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
 
-# --- VIDEO YUBORILGANDA FILE_ID NI CHIQARISH ---
-@dp.message(F.video)
-async def catch_video_file_id(message: types.Message):
-    file_id = message.video.file_id
-    await message.reply(f"📁 **Video File ID:**\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
-
-# --- START HANDLER ---
-@dp.message(Command("start"))
-async def start_handler(message: types.Message, command: CommandObject):
-    args = command.args
-
-    if args:
-        anime_key = None
-        if args == "zombi100":
-            anime_key = "1"
-        elif args in ANIME_DATABASE:
-            anime_key = args
-
-        if anime_key:
-            await message.answer_video(
-                video=ANIME_DATABASE[anime_key]["episodes"]["1"],
-                caption=get_anime_caption(anime_key, "1"),
-                reply_markup=get_episodes_keyboard(anime_key),
-                parse_mode=ParseMode.MARKDOWN
-            )
-            return
-
+@dp.message(CommandStart())
+async def start_cmd(message: types.Message):
     await message.answer(
-        "Xush kelibsiz! Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
-        reply_markup=get_main_keyboard()
+        "👋 **Xush kelibsiz!**\nKerakli animeni tanlang:",
+        reply_markup=get_main_keyboard(),
+        parse_mode=ParseMode.MARKDOWN
     )
 
-# --- MENYU TUGMALARI ---
-@dp.callback_query(F.data == "search_code")
-async def process_code(callback: types.CallbackQuery):
-    await callback.message.answer("Kerakli anime kodini yuboring 🔢")
+@dp.callback_query(F.data.startswith("anime_"))
+async def show_anime(callback: types.CallbackQuery):
+    anime_key = callback.data.split("_")[1]
+    anime = ANIME_DATABASE[anime_key]
+    text = f"🎬 **{anime['title']}**\n\n📌 **Janr:** {anime['genre']}\n🔢 **Qismlar soni:** {anime['total']} ta\n\nQismni tanlang:"
+    await callback.message.edit_text(text, reply_markup=get_episodes_keyboard(anime_key), parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
 
-@dp.callback_query(F.data == "search_name")
-async def process_name(callback: types.CallbackQuery):
-    await callback.message.answer("Anime nomini yozib yuboring 🔍")
-    await callback.answer()
-
-@dp.callback_query(F.data == "search_genre")
-async def process_genre(callback: types.CallbackQuery):
-    await callback.message.answer("Hozircha janrlar bo'limi to'ldirilmoqda...")
-    await callback.answer()
-
-# --- CHATDA RAQAM YOKI MATN YUBORGANDA ---
-@dp.message(F.text)
-async def handle_text_code(message: types.Message):
-    text = message.text.strip().lower()
-    
-    if text in ANIME_DATABASE:
-        await message.answer_video(
-            video=ANIME_DATABASE[text]["episodes"]["1"],
-            caption=get_anime_caption(text, "1"),
-            reply_markup=get_episodes_keyboard(text),
-            parse_mode=ParseMode.MARKDOWN
-        )
-    elif "enaga" in text or "boy qizi" in text or "akademiya" in text:
-        await message.answer_video(
-            video=ANIME_DATABASE["2"]["episodes"]["1"],
-            caption=get_anime_caption("2", "1"),
-            reply_markup=get_episodes_keyboard("2"),
-            parse_mode=ParseMode.MARKDOWN
-        )
-    elif "zom" in text or "zombi" in text:
-        await message.answer_video(
-            video=ANIME_DATABASE["1"]["episodes"]["1"],
-            caption=get_anime_caption("1", "1"),
-            reply_markup=get_episodes_keyboard("1"),
-            parse_mode=ParseMode.MARKDOWN
-        )
-    elif "arra" in text or "chainsaw" in text or "csm" in text:
-        await message.answer_video(
-            video=ANIME_DATABASE["3"]["episodes"]["1"],
-            caption=get_anime_caption("3", "1"),
-            reply_markup=get_episodes_keyboard("3"),
-            parse_mode=ParseMode.MARKDOWN
-        )
-    else:
-        await message.answer("❌ Bu kod bo'yicha anime topilmadi. Kodni tekshirib qayta yuboring.")
-
-# --- INLINE QISM TUGMALARI BOSILGANDA ---
 @dp.callback_query(F.data.startswith("ep_"))
 async def send_episode(callback: types.CallbackQuery):
     _, anime_key, ep_num = callback.data.split("_")
+    file_id = ANIME_DATABASE[anime_key]["episodes"].get(ep_num)
     
-    if anime_key in ANIME_DATABASE and ep_num in ANIME_DATABASE[anime_key]["episodes"]:
+    if file_id:
         await callback.message.answer_video(
-            video=ANIME_DATABASE[anime_key]["episodes"][ep_num],
-            caption=get_anime_caption(anime_key, ep_num),
-            reply_markup=get_episodes_keyboard(anime_key),
-            parse_mode=ParseMode.MARKDOWN
+            video=file_id,
+            caption=f"🎬 {ANIME_DATABASE[anime_key]['title']} — {ep_num}-qism",
+            reply_markup=get_episodes_keyboard(anime_key)
         )
+    else:
+        await callback.answer("⚠️ Bu qism hali qo'shilmagan!", show_alert=True)
     await callback.answer()
 
-async def main():
-    await dp.start_polling(bot)
+@dp.callback_query(F.data == "back_to_main")
+async def back_to_main(callback: types.CallbackQuery):
+    await callback.message.edit_text(
+        "👋 **Xush kelibsiz!**\nKerakli animeni tanlang:",
+        reply_markup=get_main_keyboard(),
+        parse_mode=ParseMode.MARKDOWN
+    )
+    await callback.answer()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import asyncio
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    asyncio.run(dp.start_polling(bot))
