@@ -10,7 +10,7 @@ TOKEN = "8896707660:AAGZ7CpCTVXhiDJFfcycOT_YRyFvC3wU5RE"
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# To'liq anime bazasi (o'zing bergan kodlar bilan)
+# To'liq anime bazasi
 ANIME_DATABASE = {
     "1": {
         "title": "Zombi 100",
@@ -66,7 +66,6 @@ ANIME_DATABASE = {
     }
 }
 
-# Asosiy menyu (2-rasmdagidek)
 def get_main_menu():
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_by_code")],
@@ -75,13 +74,12 @@ def get_main_menu():
         [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
     ])
 
-# Qismlar menyusi
 def get_episodes_keyboard(anime_key: str):
     anime = ANIME_DATABASE[anime_key]
     buttons = []
     row = []
     for ep_num in range(1, anime["total"] + 1):
-        row.append(InlineKeyboardButton(text=f"{ep_num}", callback_data=f"ep_{anime_key}_{ep_num}"))
+        row.append(InlineKeyboardButton(text=str(ep_num), callback_data=f"ep_{anime_key}_{ep_num}"))
         if len(row) == 4:
             buttons.append(row)
             row = []
@@ -131,8 +129,11 @@ async def handle_code_input(message: types.Message):
 
 @dp.callback_query(F.data.startswith("ep_"))
 async def send_episode(callback: types.CallbackQuery):
-    _, anime_key, ep_num = callback.data.split("_")
-    file_id = ANIME_DATABASE[anime_key]["episodes"].get(ep_num)
+    parts = callback.data.split("_")
+    anime_key = parts[1]
+    ep_num = parts[2]  # Endi 10, 11, 12, 13 ham to'g'ri ishlaydi
+    
+    file_id = ANIME_DATABASE.get(anime_key, {}).get("episodes", {}).get(ep_num)
     
     if file_id:
         await callback.message.answer_video(
