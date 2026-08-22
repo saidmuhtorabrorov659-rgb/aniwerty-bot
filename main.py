@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 import aiosqlite
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.enums import ParseMode
@@ -8,6 +9,11 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 TOKEN = "8896707660:AAGZ7CpCTVXhiDJFfcycOT_YRyFvC3wU5RE"
 DB_NAME = "aniwerty.db"
+
+# Muammo bo'lmasligi uchun eskisini o'chirib yuboramiz (faqat birinchi marta yangilashda yordam beradi)
+# Agar har safar o'chib ketishini xohlamasang, keyin bu qatorni o'chirib tashlashing mumkin
+if os.path.exists(DB_NAME):
+    os.remove(DB_NAME)
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -35,6 +41,7 @@ async def init_db():
             count = (await cursor.fetchone())[0]
             
         if count == 0:
+            # 1. Zombi 100
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (1, "Zombi 100", "Komediya, Ekshn"))
             zombi_eps = [
@@ -54,6 +61,7 @@ async def init_db():
             for ep in zombi_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (1, ep))
 
+            # 2. Akademiyaning birinchi raqamli boy qizi
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (2, "Akademiyaning birinchi raqamli boy qizi", "Romantika"))
             akad_eps = [
@@ -67,6 +75,7 @@ async def init_db():
             for ep in akad_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (2, ep))
 
+            # 3. Arra Odam (Chainsaw Man)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (3, "Arra Odam (Chainsaw Man)", "Ekshn, Fentezi"))
             chainsaw_eps = [
@@ -100,7 +109,7 @@ async def get_main_keyboard():
 
 async def get_episodes_keyboard(anime_id: int):
     async with aiosqlite.connect(DB_NAME) as db:
-        async with db.execute("SELECT id FROM episodes WHERE anime_id = ?", (anime_id,)) as cursor:
+        async with db.execute("id FROM episodes WHERE anime_id = ?", (anime_id,)) if False else db.execute("SELECT id FROM episodes WHERE anime_id = ?", (anime_id,)) as cursor:
             episodes = await cursor.fetchall()
     buttons = []
     row = []
@@ -140,17 +149,34 @@ async def send_episode(callback: types.CallbackQuery):
     parts = callback.data.split("_")
     anime_id = parts[1]
     ep_db_id = parts[2]
+    
     async with aiosqlite.connect(DB_NAME) as db:
         async with db.execute("SELECT video_file_id FROM episodes WHERE id = ?", (ep_db_id,)) as cursor:
             ep_data = await cursor.fetchone()
         async with db.execute("SELECT title FROM anime WHERE id = ?", (anime_id,)) as cursor:
             anime_data = await cursor.fetchone()
+            
+        # Bazadagi shu animega tegishli barcha qismlarni tartib raqamini aniqlash uchun olamiz
+        async with db.execute("SELECT id FROM episodes WHERE anime_id = ?", (anime_id,)) as cursor:
+            all_eps = await cursor.fetchall()
+
+    # Qaysi qism ekanligini topamiz (1, 2, 3...)
+    ep_number = "1"
+    for idx, (db_id,) in enumerate(all_eps, start=1):
+        if str(db_id) == str(ep_db_id):
+            ep_number = str(idx)
+            break
+
     if ep_data and anime_data:
         file_id = ep_data[0]
         title = anime_data[0]
-        # Videoni yuborganda faqat shu qismning o'ziga mos tugmalar beriladi
         keyboard = await get_episodes_keyboard(int(anime_id))
-        await callback.message.answer_video(video=file_id, caption=f"🎬 {title}", reply_markup=keyboard)
+        await callback.message.answer_video(
+            video=file_id,
+            caption=f"🎬 **{title}** — {ep_number}-qism",
+            reply_markup=keyboard,
+            parse_mode=ParseMode.MARKDOWN
+        )
     else:
         await callback.answer("⚠️ Bu qism topilmadi!", show_alert=True)
     await callback.answer()
@@ -158,7 +184,6 @@ async def send_episode(callback: types.CallbackQuery):
 @dp.callback_query(F.data == "back_to_main")
 async def back_to_main(callback: types.CallbackQuery):
     keyboard = await get_main_keyboard()
-    # Agar xabar video bo'lsa edit qilib bo'lmaydi, shuning uchun yangi xabar yuborib eskisini o'chiramiz yoki oddiy matn bo'lsa edit qilamiz
     try:
         await callback.message.edit_text("👋 **Xush kelibsiz!**\nKerakli animeni tanlang:", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
     except Exception:
