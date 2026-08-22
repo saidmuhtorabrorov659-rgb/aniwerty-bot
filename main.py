@@ -5,7 +5,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-TOKEN = "8896707660:AAHv1n_..." # O'zingning tokening
+TOKEN = "8896707660:AAEWygEMyoW-jLSTYzoYq5gD9bkBRjg3os0" # O'zingning tokening
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
