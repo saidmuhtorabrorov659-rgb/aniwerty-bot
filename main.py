@@ -47,24 +47,24 @@ ANIME_DATABASE = {
         }
     },
     # 3 - Arra-odam (Chainsaw Man)
-    "3": {
-        "title": "Arra-odam (Chainsaw Man)",
+   "3": {
+        "title": "Arra Odam ",
         "total": 13,
-        "genre": "Ekshn, Shonen, Triller, Mistik",
+        "genre": "Ekshn, Qorong'u Fentezi, Shounen",
         "episodes": {
-            "1": "BAACAgIAAxkBAAIBjGqITvek1hU9nboe-1P9lGEGpjxDAAIDHwACXKNZs8JjwrjcGI_PQQ",
-            "2": "BAACAgIAAxkBAAIBjmqIUEWjWZowMVK27oQpnPFqffKAAJ_IwACW3VgS7zWNDOLr76IPQQ",
-            "3": "BAACAgIAAxkBAAIBkGqIUEpl0lR5v7gGhoeV3B2iQiNAAIEIgAClYgQSzoDERkp59oHPQQ",
-            "4": "BAACAgIAAxkBAAIBkmqIUE6eSoMqzigxkohaJwrIPZmBAAjYIgACNggS0hxS1xKQdYVPQQ",
-            "5": "BAACAgIAAxkBAIBlGqIUFKSgnZF0covupcFJtcZSzPlAAK0IQACPAwBSWqr39AAAbW05D0E",
-            "6": "BAACAgIAAxkBAIBlmqIUFDbKZwO15pJefRbOIJqD3r0AAMeAAJE8fLlmyi689aR8jA9BA",
-            "7": "BAACAgIAAxkBAIBmGqIUForW-Aw9tUsowHiD9PtP5DgAAKDIwACPnQgSD-Sn_CMPd0tPQQ",
-            "8": "BAACAgIAAxkBAIBmmqIUF64dJ6QMNbqy3_kwnV8E6dAAIZKQAC3TdASvDSAiWwvPGdPQQ",
-            "9": "BAACAgIAAxkBAIBnGqIUGLsvI59Ix7uiBwHdt-wHcaTAAIsNQAC3BAOSH26CMRr7p1ePQQ",
-            "10": "BAACAgIAAxkBAIBnmqIUGVAX6DnhNFR-IbNV1fQ87pKAAI2NQAC3BAOSFFJQNyPhiX3PQQ",
-            "11": "BAACAgIAAxkBAIBoGqIUGqdBdM0s1p6dJffxX9Q9ANEAAJENQAC3BAOSOauMh1NIQxRPQQ",
-            "12": "BAACAgIAAxkBAIBomqIUG6ROElwqajBRkvFlQABHF9SjgACVJUAAtwQKEjJ05nmrrPThj0E",
-            "13": "BAACAgIAAxkBAIBpGqIUHQNrFiIhDDKVxGnf7biBop2AAI1kgAC80rRSegEI-Ds64PMPQQ"
+            "1": "BAACAgIAAxkDAAIB7mqJQdvtq0_8TqJX0MkL7PFL7zsYAAIDHwACXKNZs8JjwrjcGI_PQQ",
+            "2": "BAACAgIAAxkDAAIB72qJYXtAaYpxoqtecyI5JwAB7MdPpAgACfYMAA1t1YEu81jQzi6--ID0E",
+            "3": "BAACAgIAAxkBAAICWqJnunHnWC6RxmqAWiWyEX33asAAIEIgACLYgQSzoDERkp59oHPQQ",
+            "4": "BAACAgIAAxkBAAIC2qJnuzCir_Tqcc603qAQcskk95caAJyIgAcQNGgS0hxS1xKQdYVPQQ",
+            "5": "BAACAgIAAxkBAAICWqJnxH6rmNIQfsoB9qR0cN-vmhnAAK0IQACPaWBSwqr39AAAbW05D0E",
+            "6": "BAACAgIAAxkBAAICJ2qJnxcmlwXLARgTveGY0410YP2hAaAMEAAJE8flLmyi689aRjA9BA",
+            "7": "BAACAgIAAxkBAAICKWqJnxtfJgLeUKV61WTLuAAB_Oxx8wACgyMAAj50IEg_kp_3DD3dLTr0E",
+            "8": "BAACAgIAAxkBAAICK2qJnx9mUp34Qbk_z_RuJQyg1m2wAAIZKQAC3DaSvDSAiWvPGdPQQA",
+            "9": "BAACAgIAAxkBAAICLWqJnybZ6pEyCdqEerk32_y-WRyPAAiSNQAC3BAoSH26CMRr7plEPQQ",
+            "10": "BAACAgIAAxkBAAICL2qJnyo5a94Y0t4JJmBrp86hmIBTAAI2NQAC3BAoSFFJQNyPhI3PQQ",
+            "11": "BAACAgIAAxkBAAICMWqJny2ahrLKVfRkEP57reNZuDFIAAJENQAC3BAoS0AuMh1NiQxRPQQ",
+            "12": "BAACAgIAAxkBAAICWqJnYQJYUTipI3bcvscSBvCB_zVtnlAAAJWNQAIC3BAoSMnTmeaus90GPQQ",
+            "13": "BAACAgIAAxkBAAICNWqJnzcvGn80UUZCG9nm6_pLkxV-AAILkgAC80rRSegEI-Ds64PMPQQ"
         }
     }
 }
