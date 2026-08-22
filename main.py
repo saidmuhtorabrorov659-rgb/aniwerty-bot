@@ -68,9 +68,9 @@ ANIME_DATABASE = {
 
 def get_main_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="⚡ Arra Odam (Chainsaw Man)", callback_data="anime_3")],
-        [InlineKeyboardButton(text="🧟 Zombi 100", callback_data="anime_1")],
-        [InlineKeyboardButton(text="🎬 Mening uy bekasi enagam", callback_data="anime_2")]
+        [InlineKeyboardButton(text=" Arra Odam (Chainsaw Man)", callback_data="anime_3")],
+        [InlineKeyboardButton(text=" Zombi 100", callback_data="anime_1")],
+        [InlineKeyboardButton(text=" Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim", callback_data="anime_2")]
     ])
 
 def get_episodes_keyboard(anime_key: str):
