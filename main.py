@@ -43,7 +43,7 @@ ANIME_DATABASE = {
             "3": "BAACAgIAAxkBAAIBWGqG6vZ3dtf7S9YdFLKmpjop49mDAAIErwAC38noSp0cgRXrYWllPQQ",
             "4": "BAACAgIAAxkBAAIBWWqG6vuVr1X0Ygr3Wt2TmcXZAAEa0QACBKgAAhhdQUuGwUSkz1vu0z0E",
             "5": "BAACAgIAAxkBAAIBWmqG6wSOq_hvZuPVA3c3oX2FjyE7AALoqgAC3C2AS5COMOI9-bHyPQQ",
-            "6": "BAACQAAxkBAAIBW2qG6wtI9O-ZDH0YTWDBTW0iTo3_AAJZHgACF6LoUz3imBALBhDOPQQ"
+            "6": "BAACAgQAAxkBAAIBW2qG6wtI9O-ZDH0YTWDBTW0iTo3_AAJZHgACF6LoUz3imBALBhDOPQQ"
         }
     },
     # 3 - Arra-odam (Chainsaw Man)
@@ -52,10 +52,10 @@ ANIME_DATABASE = {
         "total": 13,
         "genre": "Ekshn, Shonen, Triller, Mistik",
         "episodes": {
-            "1": "BAACAgIAAxkBAIBjGqITvek1hU9nboe-1P9lGEGpjxDAAIDHwACXKNZs8JjwrjcGI_PQQ",
-            "2": "BAACAgIAAxkBAIBjmqIUEWjWZowMVK27oQpnPFqffKAAJ_IwACW3VgS7zWNDOLr76IPQQ",
-            "3": "BAACAgIAAxkBAIBkGqIUEpl0lR5v7gGhoeV3B2iQiNAAIEIgAClYgQSzoDERkp59oHPQQ",
-            "4": "BAACAgIAAxkBAIBkmqIUE6eSoMqzigxkohaJwrIPZmBAAjYIgACNggS0hxS1xKQdYVPQQ",
+            "1": "BAACAgIAAxkBAAIBjGqITvek1hU9nboe-1P9lGEGpjxDAAIDHwACXKNZs8JjwrjcGI_PQQ",
+            "2": "BAACAgIAAxkBAAIBjmqIUEWjWZowMVK27oQpnPFqffKAAJ_IwACW3VgS7zWNDOLr76IPQQ",
+            "3": "BAACAgIAAxkBAAIBkGqIUEpl0lR5v7gGhoeV3B2iQiNAAIEIgAClYgQSzoDERkp59oHPQQ",
+            "4": "BAACAgIAAxkBAAIBkmqIUE6eSoMqzigxkohaJwrIPZmBAAjYIgACNggS0hxS1xKQdYVPQQ",
             "5": "BAACAgIAAxkBAIBlGqIUFKSgnZF0covupcFJtcZSzPlAAK0IQACPAwBSWqr39AAAbW05D0E",
             "6": "BAACAgIAAxkBAIBlmqIUFDbKZwO15pJefRbOIJqD3r0AAMeAAJE8fLlmyi689aR8jA9BA",
             "7": "BAACAgIAAxkBAIBmGqIUForW-Aw9tUsowHiD9PtP5DgAAKDIwACPnQgSD-Sn_CMPd0tPQQ",
