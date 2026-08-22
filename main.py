@@ -148,6 +148,7 @@ async def send_episode(callback: types.CallbackQuery):
     if ep_data and anime_data:
         file_id = ep_data[0]
         title = anime_data[0]
+        # Videoni yuborganda faqat shu qismning o'ziga mos tugmalar beriladi
         keyboard = await get_episodes_keyboard(int(anime_id))
         await callback.message.answer_video(video=file_id, caption=f"🎬 {title}", reply_markup=keyboard)
     else:
@@ -157,7 +158,11 @@ async def send_episode(callback: types.CallbackQuery):
 @dp.callback_query(F.data == "back_to_main")
 async def back_to_main(callback: types.CallbackQuery):
     keyboard = await get_main_keyboard()
-    await callback.message.edit_text("👋 **Xush kelibsiz!**\nKerakli animeni tanlang:", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+    # Agar xabar video bo'lsa edit qilib bo'lmaydi, shuning uchun yangi xabar yuborib eskisini o'chiramiz yoki oddiy matn bo'lsa edit qilamiz
+    try:
+        await callback.message.edit_text("👋 **Xush kelibsiz!**\nKerakli animeni tanlang:", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+    except Exception:
+        await callback.message.answer("👋 **Xush kelibsiz!**\nKerakli animeni tanlang:", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
 
 if __name__ == "__main__":
