@@ -7,7 +7,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from database import DB_NAME, init_db, get_anime
 
-TOKEN = "8896707660:AAEWygEMyoW-jLSTYzoYq5gD9bkBRjg3os0"
+TOKEN = "8896707660:AAGZ7CpCTVXhiDJFfcycOT_YRyFvC3wU5RE"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
