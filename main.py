@@ -6,7 +6,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-TOKEN = "8896707660:AAEWygEMyoW-jLSTYzoYq5gD9bkBRjg3os0"
+TOKEN = "8896707660:AAGZ7CpCTVXhiDJFfcycOT_YRyFvC3wU5RE"
 DB_NAME = "aniwerty.db"
 
 bot = Bot(token=TOKEN)
