@@ -1,4 +1,4 @@
-TOKEN = "8896707660:AAE9xXpaAD66t4ADpsVXflkL2QskIjdPBx4"  # <--- Yangi tokeningni shu yerga qo'shtirnoq ichiga tashlaysan
+TOKEN = "8896707660:AAE9xXpaAD66t4ADpsVXflkL2QskIjdPBx4"  # <--- Yangi tokeningni shu yerga yozasan
 
 import logging
 import sys
@@ -11,7 +11,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 DB_NAME = "aniwerty.db"
 
-# Bazani yangilash uchun eskisini o'chiramiz
+# Eski bazani tozalab, noldan boshlash uchun
 if os.path.exists(DB_NAME):
     os.remove(DB_NAME)
 
@@ -41,57 +41,29 @@ async def init_db():
             count = (await cursor.fetchone())[0]
             
         if count == 0:
-            # 1. Zombi 100
+            # 1-Anime: Zombi 100
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (1, "Zombi 100", "Komediya, Ekshn"))
             zombi_eps = [
-                "BAACAgIAAxkDAAO_aoMrWJrqEhmS6FrmDMmdP1UgeWAAAtkuAAIh-oBJoEzm5rYLpyg9BA",
-                "BAACAgIAAxkDAAPAaoMrWNwYYARcEa-4NDygo9zwOLYAAjgyAAJGZyBKOYvpww2Wqu89BA",
-                "BAACAgIAAxkDAAPBaoMrWKpeL_TdQ8fPnOSfDkJjWRAAAoItAAJ0qFhKPF6o7oaFIiA9BA",
-                "BAACAgIAAxkDAAPCaoMrWPDNS-fiJhh3ZCDZOEWz74UAAts7AALTfeBKDD-6jImythI9BA",
-                "BAACAgIAAxkDAAPDaoMrWDIAAVyYCgVp5IzlKqczn7UJAAL_MwACmTM4S2AoXyPKNBDrPQQ",
-                "BAACAgIAAxkDAAPEaoMrWC494xPJnJ4mFunfszXBOOMAAp43AAKeybhLOjn6sYqZE0Q9BA",
-                "BAACAgIAAxkDAAPFaoMrWDZcQ7xry1M-FCsDfRkK5gUAAqs0AALxLnlIQA1xqWBJPG09BA",
-                "BAACAgIAAxkDAAPGaoMrWDPq0re9FfptyQRwOqHUx1AAArE0AALxLnlI3fXJzO3flk49BA",
-                "BAACAgIAAxkDAAPHaoMrWCV3ZCJbkMZjPCC6srOHFhcAAvU9AAK8n5FIjtqGPUpNbuA9BA",
-                "BAACAgIAAxkDAAPIaoMrWDg6OUZF1SRmu13HNIAOjf4AAq9CAAJ9wlFIL_Vc04HNKi09BA",
-                "BAACAgIAAxkDAAPJaoMrWKqmMuZLE02W7t5IlCz6psMAAp5AAAJ-1WhImMLnoZob7cM9BA",
-                "BAACAgIAAxkDAAPKaoMrWObCk_yw-wn2gB0AATmJ-vGnAAJyNwACmmKASIvYF4yXj8b9PQQ"
+                "BURE_FILE_ID_1", "BURE_FILE_ID_2" # <-- O'zingning file_id laringni qo'shasan
             ]
             for ep in zombi_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (1, ep))
 
-            # 2. Akademiyaning birinchi raqamli boy qizi
+            # 2-Anime: Akademiyaning birinchi raqamli boy qizi
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (2, "Akademiyaning birinchi raqamli boy qizi", "Romantika"))
             akad_eps = [
-                "BAACAgIAAxkDAAIBVmqG6uCIBQx6ZzcPotiUSZN-lPxCAAIapgAC51hoSjssBuD_2phrPQQ",
-                "BAACAgIAAxkDAAIBV2qG6vI62sHwPoaZWI30u-65AAFNoAACapsAAjItoEoaVkHC4Zv7ED0E",
-                "BAACAgIAAxkDAAIBWGqG6vZ3dtf7S9YdFLKmpjop49mDAAIErwAC38noSp0cgRXrYWllPQQ",
-                "BAACAgIAAxkDAAIBWWqG6vuVr1X0Ygr3Wt2TmcXZAAEa0QACBKgAAhhdQUuGwUSkz1vu0z0E",
-                "BAACAgIAAxkDAAIBWmqG6wSOq_hvZuPVA3c3oX2FjyE7AALoqgAC3C2AS5COMOI9-bHyPQQ",
-                "BAACQAAxkBAAIBW2qG6wtI9O-ZDH0YTWDBTW0iTo3_AAJZHgACF6LoUz3imBALBhDOPQQ"
+                "BURE_FILE_ID_1", "BURE_FILE_ID_2"
             ]
             for ep in akad_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (2, ep))
 
-            # 3. Arra Odam (Chainsaw Man)
+            # 3-Anime: Arra Odam (Chainsaw Man)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (3, "Arra Odam (Chainsaw Man)", "Ekshn, Qorong'u Fentezi, Shounen"))
             chainsaw_eps = [
-                "BAACAgIAAxkDAAIB7mqJQdvtq0_8TqJX0MkL7PFL7zsYAAIDHwACXKNZs8JjwrjcGI_PQQ",
-                "BAACAgIAAxkDAAIB72qJYXtAaYpxoqtecyI5JwAB7MdPpAgACfYMAA1t1YEu81jQzi6--ID0E",
-                "BAACAgIAAxkDAAICWqJnunHnWC6RxmqAWiWyEX33asAAIEIgACLYgQSzoDERkp59oHPQQ",
-                "BAACAgIAAxkDAAIC2qJnuzCir_Tqcc603qAQcskk95caAJyIgAcQNGgS0hxS1xKQdYVPQQ",
-                "BAACAgIAAxkDAAICWqJnxH6rmNIQfsoB9qR0cN-vmhnAAK0IQACPaWBSwqr39AAAbW05D0E",
-                "BAACAgIAAxkDAAICJ2qJnxcmlwXLARgTveGY0410YP2hAaAMEAAJE8flLmyi689aRjA9BA",
-                "BAACAgIAAxkDAAICKWqJnxtfJgLeUKV61WTLuAAB_Oxx8wACgyMAAj50IEg_kp_3DD3dLTr0E",
-                "BAACAgIAAxkDAAICK2qJnx9mUp34Qbk_z_RuJQyg1m2wAAIZKQAC3DaSvDSAiWvPGdPQQA",
-                "BAACAgIAAxkDAAICLWqJnybZ6pEyCdqEerk32_y-WRyPAAiSNQAC3BAoSH26CMRr7plEPQQ",
-                "BAACAgIAAxkDAAICL2qJnyo5a94Y0t4JJmBrp86hmIBTAAI2NQAC3BAoSFFJQNyPhI3PQQ",
-                "BAACAgIAAxkDAAICMWqJny2ahrLKVfRkEP57reNZuDFIAAJENQAC3BAoS0AuMh1NiQxRPQQ",
-                "BAACAgIAAxkDAAICWqJnYQJYUTipI3bcvscSBvCB_zVtnlAAAJWNQAIC3BAoSMnTmeaus90GPQQ",
-                "BAACAgIAAxkDAAICNWqJnzcvGn80UUZCG9nm6_pLkxV-AAILkgAC80rRSegEI-Ds64PMPQQ"
+                "BURE_FILE_ID_1", "BURE_FILE_ID_2"
             ]
             for ep in chainsaw_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (3, ep))
@@ -111,9 +83,7 @@ async def get_anime_list_keyboard():
     async with aiosqlite.connect(DB_NAME) as db:
         async with db.execute("SELECT id, title FROM anime") as cursor:
             rows = await cursor.fetchall()
-    buttons = []
-    for anime_id, title in rows:
-        buttons.append([InlineKeyboardButton(text=title, callback_data=f"anime_{anime_id}")])
+    buttons = [[InlineKeyboardButton(text=f"{anime_id}. {title}", callback_data=f"anime_{anime_id}")] for anime_id, title in rows]
     buttons.append([InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_main")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -136,17 +106,32 @@ async def get_episodes_keyboard(anime_id: int):
 @dp.message(CommandStart())
 async def start_cmd(message: types.Message):
     await init_db()
-    keyboard = get_main_menu_keyboard()
     await message.answer(
-        "👋 **Xush kelibsiz!** Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
-        reply_markup=keyboard,
+        "👋 **Xush kelibsiz!** Kerakli bo'limni tanlang yoki anime kodini (masalan: 1, 2, 3) yuboring 👇",
+        reply_markup=get_main_menu_keyboard(),
         parse_mode=ParseMode.MARKDOWN
     )
+
+# Foydalanuvchi raqam (ID) yuborganda qidirish
+@dp.message(F.text.regexp(r"^\d+$"))
+async def search_by_code_message(message: types.Message):
+    anime_id = int(message.text)
+    async with aiosqlite.connect(DB_NAME) as db:
+        async with db.execute("SELECT title, description FROM anime WHERE id = ?", (anime_id,)) as cursor:
+            anime = await cursor.fetchone()
+            
+    if anime:
+        title, description = anime
+        text = f"🎬 **{title}**\n\n📌 **Tavsif:** {description}\n\nQismni tanlang:"
+        keyboard = await get_episodes_keyboard(anime_id)
+        await message.answer(text, reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+    else:
+        await message.answer("⚠️ Bunday kodli anime topilmadi! Qaytadan urinib ko'ring.")
 
 @dp.callback_query(F.data == "search_by_code")
 async def search_code_cb(callback: types.CallbackQuery):
     keyboard = await get_anime_list_keyboard()
-    await callback.message.edit_text("🎬 **Mavjud animelar ro'yxati:**", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+    await callback.message.edit_text("🎬 **Mavjud animelar ro'yxati (yoki kodini yuboring):**", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
 
 @dp.callback_query(F.data == "search_by_name")
@@ -200,12 +185,15 @@ async def send_episode(callback: types.CallbackQuery):
         file_id = ep_data[0]
         title = anime_data[0]
         keyboard = await get_episodes_keyboard(int(anime_id))
-        await callback.message.answer_video(
-            video=file_id,
-            caption=f"🎬 **{title}** — {ep_number}-qism",
-            reply_markup=keyboard,
-            parse_mode=ParseMode.MARKDOWN
-        )
+        try:
+            await callback.message.answer_video(
+                video=file_id,
+                caption=f"🎬 **{title}** — {ep_number}-qism",
+                reply_markup=keyboard,
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Exception:
+            await callback.answer("⚠️ Bu qism uchun video yuklanmagan yoki file_id yaroqsiz!", show_alert=True)
     else:
         await callback.answer("⚠️ Bu qism topilmadi!", show_alert=True)
     await callback.answer()
@@ -221,17 +209,16 @@ async def back_to_list(callback: types.CallbackQuery):
 
 @dp.callback_query(F.data == "back_to_main")
 async def back_to_main(callback: types.CallbackQuery):
-    keyboard = get_main_menu_keyboard()
     try:
         await callback.message.edit_text(
             "👋 **Xush kelibsiz!** Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
-            reply_markup=keyboard,
+            reply_markup=get_main_menu_keyboard(),
             parse_mode=ParseMode.MARKDOWN
         )
     except Exception:
         await callback.message.answer(
             "👋 **Xush kelibsiz!** Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
-            reply_markup=keyboard,
+            reply_markup=get_main_menu_keyboard(),
             parse_mode=ParseMode.MARKDOWN
         )
     await callback.answer()
