@@ -1,4 +1,4 @@
-TOKEN = "8896707660:AAE9xXpaAD66t4ADpsVXflkL2QskIjdPBx4"  # <--- Yangi tokeningni shu yerga yozasan
+TOKEN = "8896707660:AAH3jUQq0K1SnsmrmEsEgUOW__PilNtMDGw"
 
 import logging
 import sys
@@ -45,7 +45,7 @@ async def init_db():
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (1, "Zombi 100", "Komediya, Ekshn"))
             zombi_eps = [
-                "BURE_FILE_ID_1", "BURE_FILE_ID_2" # <-- O'zingning file_id laringni qo'shasan
+                "BURE_FILE_ID_1", "BURE_FILE_ID_2"
             ]
             for ep in zombi_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (1, ep))
@@ -222,6 +222,12 @@ async def back_to_main(callback: types.CallbackQuery):
             parse_mode=ParseMode.MARKDOWN
         )
     await callback.answer()
+
+# Botga istalgan video tashlanganda uning file_id sini chiqarib beradi
+@dp.message(F.video)
+async def get_file_id(message: types.Message):
+    file_id = message.video.file_id
+    await message.reply(f"📹 **Video File ID:**\n\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
 
 if __name__ == "__main__":
     import asyncio
