@@ -41,7 +41,7 @@ async def init_db():
             count = (await cursor.fetchone())[0]
             
         if count == 0:
-            # 1-Anime: Zombi 100
+            # 1-Anime: Zombi 100 (12 ta qism)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (1, "Zombi 100", "Komediya, Ekshn"))
             zombi_eps = [
@@ -61,29 +61,9 @@ async def init_db():
             for ep in zombi_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (1, ep))
 
-            # 2-Anime: Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim
+            # 2-Anime: Arra Odam (Chainsaw Man) (13 ta qism)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (2, "Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim", "Romantika, Komediya"))
-            akad_eps = [
-                "BAACAgIAAxkBAAIC7mqLyixFAyBUE39aBieVXfRpNpOqAAIDHwACXKNZSs8JjwrjcGI_PQQ",
-                "BAACAgIAAxkBAAIC72qLyizCmTaM7Ps3UkF2S5KZYj_VAAJ_IwACW3VgS7zWNDOLr76IPQQ",
-                "BAACAgIAAxkBAAIC8GqLyixlTUmT_3DwyD1Fr0EfNGC5AAIEIgAClYgQSzoDERkp59oHPQQ",
-                "BAACAgIAAxkBAAIC8WqLyiwwEBs1VEQoP68TMs4vlEHpAAJyIgACqNGgS0hxSlxKQdYVPQQ",
-                "BAACAgIAAxkBAAIC8mqLyixxvjV_10NALdYfGsfgA92HAAK0IQACPaWBSwqr39AAAbWO5D0E",
-                "BAACAgIAAxkBAAIC82qLyiwNWqdOR2YN0Mf4vNRAA8_aAAMeAAJE8flLmyi689aR8jA9BA",
-                "BAACAgIAAxkBAAIC9GqLyizdocOXHHSEJu2uupJTfP8zAAKDIwACPnQgSD-Sn_cMPd0tPQQ",
-                "BAACAgIAAxkBAAIC9WqLyiwSJb5-eAZq0IDHnjCwG2QbAAIZKQAC3TdASvDSAiWwvPGdPQQ",
-                "BAACAgIAAxkBAAIC92qLyiwqdn7YgZ6Py1lUygLjEWA6AAI2NQAC3BAoSFFJQNyPhiX3PQQ",
-                "BAACAgIAAxkBAAIC-GqLyixg71LdhiIESoBszbBgPb3RAAJENQAC3BAoSOauMhlNiQxRPQQ",
-                "BAACAgIAAxkBAAIC-WqLyiz9uKJawHP0mOfQtIkIkfVzAAJWNQAC3BAoSMnTmeaus9OGPQQ",
-                "BAACAgIAAxkBAAIC-mqLyix7aHfYULgb1Ff8yYETGHUaAAIlkgAC80rRSegEI-Ds64PMPQQ"
-            ]
-            for ep in akad_eps:
-                await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (2, ep))
-
-            # 3-Anime: Arra Odam (Chainsaw Man)
-            await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (3, "Arra Odam (Chainsaw Man)", "Ekshn, Qorong'u Fentezi, Shounen"))
+                             (2, "Arra Odam (Chainsaw Man)", "Ekshn, Qorong'u Fentezi, Shounen"))
             chainsaw_eps = [
                 "BAACAgIAAxkBAAIC4GqLyYrO-0FrHTGykLAs7KdxBdJiAAIapgAC51hoSjssBuD_2phrPQQ",
                 "BAACAgIAAxkBAAIC4mqLycyM-sC15Vtd_W1raHVeCGcZAAJqmwACMi2gShpWQcLhm_sQPQQ",
@@ -91,9 +71,25 @@ async def init_db():
                 "BAACAgIAAxkBAAIC5mqLydpioaX7H-3I_pMhYU7gZbtHAAIEqAACGF1BS4bBRKTPW-7TPQQ",
                 "BAACAgIAAxkBAAIC6GqLyeA69H0Gy-XqJIy1qhAb1A_4AALoqgAC3C2AS5COMOI9-bHyPQQ",
                 "BAACAgQAAxkBAAIC6mqLyeq6LnxIitI0s-W5S70YF5CsAAJZHgACF6LoUz3imBALBhDOPQQ",
-                "BAACAgQAAxkBAAIC7GqLyfE5uR62XUnph9s0vPOilCpQAAKqHwACMnQxUEJkzEzWAAFTMz0E"
+                "BAACAgQAAxkBAAIC7GqLyfE5uR62XUnph9s0vPOilCpQAAKqHwACMnQxUEJkzEzWAAFTMz0E",
+                # (13 tagacha yetkazish uchun qolgan qism IDlarini shu yerga qo'shasiz)
             ]
             for ep in chainsaw_eps:
+                await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (2, ep))
+
+            # 3-Anime: Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim (7 ta qism)
+            await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
+                             (3, "Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim", "Romantika, Komediya"))
+            akad_eps = [
+                "BAACAgIAAxkBAAIC7mqLyixFAyBUE39aBieVXfRpNpOqAAIDHwACXKNZSs8JjwrjcGI_PQQ",
+                "BAACAgIAAxkBAAIC72qLyizCmTaM7Ps3UkF2S5KZYj_VAAJ_IwACW3VgS7zWNDOLr76IPQQ",
+                "BAACAgIAAxkBAAIC8GqLyixlTUmT_3DwyD1Fr0EfNGC5AAIEIgAClYgQSzoDERkp59oHPQQ",
+                "BAACAgIAAxkBAAIC8WqLyiwwEBs1VEQoP68TMs4vlEHpAAJyIgACqNGgS0hxSlxKQdYVPQQ",
+                "BAACAgIAAxkBAAIC8mqLyixxvjV_10NALdYfGsfgA92HAAK0IQACPaWBSwqr39AAAbWO5D0E",
+                "BAACAgIAAxkBAAIC82qLyiwNWqdOR2YN0Mf4vNRAA8_aAAMeAAJE8flLmyi689aR8jA9BA",
+                "BAACAgIAAxkBAAIC9GqLyizdocOXHHSEJu2uupJTfP8zAAKDIwACPnQgSD-Sn_cMPd0tPQQ"
+            ]
+            for ep in akad_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (3, ep))
 
             await db.commit()
@@ -140,7 +136,6 @@ async def start_cmd(message: types.Message):
         parse_mode=ParseMode.MARKDOWN
     )
 
-# Foydalanuvchi raqam (ID) yuborganda qidirish
 @dp.message(F.text.regexp(r"^\d+$"))
 async def search_by_code_message(message: types.Message):
     anime_id = int(message.text)
@@ -251,7 +246,6 @@ async def back_to_main(callback: types.CallbackQuery):
         )
     await callback.answer()
 
-# Botga istalgan video tashlanganda uning file_id sini chiqarib beradi
 @dp.message(F.video)
 async def get_file_id(message: types.Message):
     file_id = message.video.file_id
