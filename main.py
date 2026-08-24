@@ -14,7 +14,6 @@ DB_NAME = "aniwerty.db"
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# Foydalanuvchi nom yozayotganini tushunish uchun holat
 user_search_state = {}
 
 async def init_db():
@@ -40,9 +39,9 @@ async def init_db():
             count = (await cursor.fetchone())[0]
             
         if count == 0:
-            # 1-Anime: Zom 100
+            # 1-Anime: Zom 100 (start=1)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (1, "Zom 100", "Komediya, Ekshn"))
+                             (1, "Zombi 100: O'lim oldi ro'yxat", "🎬 Anime: Zombi 100: O'lim oldi ro'yxat\n🎥 Qismlar: 12\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Komediya, Ekshn, Sarguzasht\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 1"))
             zombi_eps = [
                 "BAACAgIAAxkBAAIDCGqLynGOtrxRW0NJvgVTbYclFoF6AALZLgACIfqASaBM5ua2C6coPQQ",
                 "BAACAgIAAxkBAAIDCmqLynUJPQSlhazKQkTg3hVy8UXDAAI4MgACRmcgSjmL6cMNlqrvPQQ",
@@ -60,9 +59,24 @@ async def init_db():
             for ep in zombi_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (1, ep))
 
-            # 2-Anime: Arra Odam
+            # 2-Anime: Akademiyaning birinchi boy qizi (start=2)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (2, "Arra Odam", "Ekshn, Qorong'u Fentezi, Shounen"))
+                             (2, "Akademiyaning birinchi raqamli boy qizi...", "🎬 Anime: Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim\n🎥 Qismlar: 7\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Romantika, Komediya\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 2"))
+            akad_eps = [
+                "BAACAgIAAxkBAAIC4GqLyYrO-0FrHTGykLAs7KdxBdJiAAIapgAC51hoSjssBuD_2phrPQQ",
+                "BAACAgIAAxkBAAIC4mqLycyM-sC15Vtd_W1raHVeCGcZAAJqmwACMi2gShpWQcLhm_sQPQQ",
+                "BAACAgIAAxkBAAIC5GqLydPFeYWMg9ON7MuTnyO8a1fAAAIErwAC38noSp0cgRXrYWllPQQ",
+                "BAACAgIAAxkBAAIC5mqLydpioaX7H-3I_pMhYU7gZbtHAAIEqAACGF1BS4bBRKTPW-7TPQQ",
+                "BAACAgIAAxkBAAIC6GqLyeA69H0Gy-XqJIy1qhAb1A_4AALoqgAC3C2AS5COMOI9-bHyPQQ",
+                "BAACAgQAAxkBAAIC6mqLyeq6LnxIitI0s-W5S70YF5CsAAJZHgACF6LoUz3imBALBhDOPQQ",
+                "BAACAgQAAxkBAAIC7GqLyfE5uR62XUnph9s0vPOilCpQAAKqHwACMnQxUEJkzEzWAAFTMz0E"
+            ]
+            for ep in akad_eps:
+                await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (2, ep))
+
+            # 3-Anime: Arra Odam (start=3)
+            await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
+                             (3, "Arra Odam (Chainsaw Man)", "🎬 Anime: Arra Odam (Chainsaw Man)\n🎥 Qismlar: 13\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Ekshn, Qorong'u Fentezi, Shounen\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 3"))
             chainsaw_eps = [
                 "BAACAgIAAxkBAAIC7mqLyixFAyBUE39aBieVXfRpNpOqAAIDHwACXKNZSs8JjwrjcGI_PQQ",
                 "BAACAgIAAxkBAAIC72qLyizCmTaM7Ps3UkF2S5KZYj_VAAJ_IwACW3VgS7zWNDOLr76IPQQ",
@@ -79,32 +93,16 @@ async def init_db():
                 "BAACAgIAAxkBAAIC-mqLyix7aHfYULgb1Ff8yYETGHUaAAIlkgAC80rRSegEI-Ds64PMPQQ"
             ]
             for ep in chainsaw_eps:
-                await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (2, ep))
-
-            # 3-Anime: Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim
-            await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (3, "Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim", "Romantika, Komediya"))
-            akad_eps = [
-                "BAACAgIAAxkBAAIC4GqLyYrO-0FrHTGykLAs7KdxBdJiAAIapgAC51hoSjssBuD_2phrPQQ",
-                "BAACAgIAAxkBAAIC4mqLycyM-sC15Vtd_W1raHVeCGcZAAJqmwACMi2gShpWQcLhm_sQPQQ",
-                "BAACAgIAAxkBAAIC5GqLydPFeYWMg9ON7MuTnyO8a1fAAAIErwAC38noSp0cgRXrYWllPQQ",
-                "BAACAgIAAxkBAAIC5mqLydpioaX7H-3I_pMhYU7gZbtHAAIEqAACGF1BS4bBRKTPW-7TPQQ",
-                "BAACAgIAAxkBAAIC6GqLyeA69H0Gy-XqJIy1qhAb1A_4AALoqgAC3C2AS5COMOI9-bHyPQQ",
-                "BAACAgQAAxkBAAIC6mqLyeq6LnxIitI0s-W5S70YF5CsAAJZHgACF6LoUz3imBALBhDOPQQ",
-                "BAACAgQAAxkBAAIC7GqLyfE5uR62XUnph9s0vPOilCpQAAKqHwACMnQxUEJkzEzWAAFTMz0E"
-            ]
-            for ep in akad_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (3, ep))
 
             await db.commit()
 
-# Menyu tugmalari
 def get_main_menu_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="📺 Anime kodi orqali qidirish", callback_data="search_by_code")],
         [InlineKeyboardButton(text="🔍 Anime nomi orqali qidirish", callback_data="search_by_name")],
         [InlineKeyboardButton(text="🎭 Janr tanlash", callback_data="choose_genre")],
-        [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/A_ToolsX")]
+        [InlineKeyboardButton(text="📢 Asosiy kanal", url="https://t.me/aniwertyn1")]
     ])
 
 async def get_anime_list_keyboard():
@@ -128,6 +126,7 @@ async def get_episodes_keyboard(anime_id: int):
             row = []
     if row:
         buttons.append(row)
+    
     buttons.append([InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_list")])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -135,8 +134,21 @@ async def get_episodes_keyboard(anime_id: int):
 async def start_cmd(message: types.Message):
     await init_db()
     user_search_state.pop(message.from_user.id, None)
+    
+    args = message.text.split()
+    if len(args) > 1 and args[1].isdigit():
+        anime_id = int(args[1])
+        async with aiosqlite.connect(DB_NAME) as db:
+            async with db.execute("SELECT description FROM anime WHERE id = ?", (anime_id,)) as cursor:
+                anime = await cursor.fetchone()
+        if anime:
+            description = anime[0]
+            keyboard = await get_episodes_keyboard(anime_id)
+            await message.answer(f"{description}\n\n👇 Qismni tanlang:", reply_markup=keyboard)
+            return
+
     await message.answer(
-        "👋 **Xush kelibsiz!** Kerakli bo'limni tanlang yoki anime kodini (masalan: 1, 2, 3) yuboring 👇",
+        "👋 **Xush kelibsiz!** Kerakli bo'limni tanlang yoki anime kodini yuboring 👇",
         reply_markup=get_main_menu_keyboard(),
         parse_mode=ParseMode.MARKDOWN
     )
@@ -152,7 +164,7 @@ async def search_code_cb(callback: types.CallbackQuery):
 async def search_name_cb(callback: types.CallbackQuery):
     user_search_state[callback.from_user.id] = "waiting_for_name"
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_main")]])
-    await callback.message.edit_text("🔍 Anime nomini yuboring (masalan: *Zom 100* yoki *Arra odam*):", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+    await callback.message.edit_text("🔍 Anime nomini yuboring:", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
 
 @dp.callback_query(F.data == "choose_genre")
@@ -169,49 +181,46 @@ async def handle_text_messages(message: types.Message):
 
     if user_search_state.get(user_id) == "waiting_for_name":
         async with aiosqlite.connect(DB_NAME) as db:
-            async with db.execute("SELECT id, title, description FROM anime WHERE title LIKE ?", (f"%{text}%",)) as cursor:
+            async with db.execute("SELECT id, description FROM anime WHERE title LIKE ?", (f"%{text}%",)) as cursor:
                 results = await cursor.fetchall()
         
         if results:
-            for anime_id, title, description in results:
-                resp_text = f"🎬 **{title}**\n\n📌 **Tavsif:** {description}\n\nQismni tanlang:"
+            for anime_id, description in results:
                 keyboard = await get_episodes_keyboard(anime_id)
-                await message.answer(resp_text, reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+                await message.answer(f"{description}\n\n👇 Qismni tanlang:", reply_markup=keyboard)
             user_search_state.pop(user_id, None)
         else:
-            await message.answer("⚠️ Bunday nomdagi anime topilmadi! Qaytadan urinib ko'ring yoki /start ni bosing.")
+            await message.answer("⚠️ Bunday nomdagi anime topilmadi!")
         return
 
     if text.isdigit():
         anime_id = int(text)
         async with aiosqlite.connect(DB_NAME) as db:
-            async with db.execute("SELECT title, description FROM anime WHERE id = ?", (anime_id,)) as cursor:
+            async with db.execute("SELECT description FROM anime WHERE id = ?", (anime_id,)) as cursor:
                 anime = await cursor.fetchone()
                 
         if anime:
-            title, description = anime
-            resp_text = f"🎬 **{title}**\n\n📌 **Tavsif:** {description}\n\nQismni tanlang:"
+            description = anime[0]
             keyboard = await get_episodes_keyboard(anime_id)
-            await message.answer(resp_text, reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+            await message.answer(f"{description}\n\n👇 Qismni tanlang:", reply_markup=keyboard)
         else:
-            await message.answer("⚠️ Bunday kodli anime topilmadi! Ro'yxatni ko'rish uchun /start ni bosing.")
+            await message.answer("⚠️ Bunday kodli anime topilmadi!")
     else:
-        await message.answer("❓ Noma'lum buyruq. Iltimos, menyudan foydalaning yoki /start ni bosing.")
+        await message.answer("❓ Noma'lum buyruq. /start ni bosing.")
 
 @dp.callback_query(F.data.startswith("anime_"))
 async def show_anime(callback: types.CallbackQuery):
     anime_id = int(callback.data.split("_")[1])
     async with aiosqlite.connect(DB_NAME) as db:
-        async with db.execute("SELECT title, description FROM anime WHERE id = ?", (anime_id,)) as cursor:
+        async with db.execute("SELECT description FROM anime WHERE id = ?", (anime_id,)) as cursor:
             anime = await cursor.fetchone()
     if anime:
-        title, description = anime
-        text = f"🎬 **{title}**\n\n📌 **Tavsif:** {description}\n\nQismni tanlang:"
+        description = anime[0]
         keyboard = await get_episodes_keyboard(anime_id)
         try:
-            await callback.message.edit_text(text, reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+            await callback.message.edit_text(f"{description}\n\n👇 Qismni tanlang:", reply_markup=keyboard)
         except Exception:
-            await callback.message.answer(text, reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+            await callback.message.answer(f"{description}\n\n👇 Qismni tanlang:", reply_markup=keyboard)
     else:
         await callback.answer("⚠️ Anime topilmadi!", show_alert=True)
     await callback.answer()
@@ -248,9 +257,9 @@ async def send_episode(callback: types.CallbackQuery):
                 parse_mode=ParseMode.MARKDOWN
             )
         except Exception:
-            await callback.answer("⚠️ Bu qism uchun video yuklanmagan yoki file_id yaroqsiz!", show_alert=True)
+            await callback.answer("⚠️ Video yuborishda xatolik!", show_alert=True)
     else:
-        await callback.answer("⚠️ Bu qism topilmadi!", show_alert=True)
+        await callback.answer("⚠️ Qism topilmadi!", show_alert=True)
     await callback.answer()
 
 @dp.callback_query(F.data == "back_to_list")
@@ -278,11 +287,6 @@ async def back_to_main(callback: types.CallbackQuery):
             parse_mode=ParseMode.MARKDOWN
         )
     await callback.answer()
-
-@dp.message(F.video)
-async def get_file_id(message: types.Message):
-    file_id = message.video.file_id
-    await message.reply(f"📹 **Video File ID:**\n\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
 
 if __name__ == "__main__":
     import asyncio
