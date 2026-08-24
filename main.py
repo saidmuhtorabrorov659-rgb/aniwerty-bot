@@ -1,4 +1,4 @@
-TOKEN = "8896707660:AAH3jUQq0K1SnsmrmEsEgUOW__PilNtMDGw"
+TOKEN = "8896707660:AAHgKBY-Rv_oOQBc0eqBa194-TsUoWPcBKc"
 
 import logging
 import sys
@@ -45,16 +45,38 @@ async def init_db():
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (1, "Zombi 100", "Komediya, Ekshn"))
             zombi_eps = [
-                "BURE_FILE_ID_1", "BURE_FILE_ID_2"
+                "BAACAgIAAxkBAAIDCGqLynGOtrxRW0NJvgVTbYclFoF6AALZLgACIfqASaBM5ua2C6coPQQ",
+                "BAACAgIAAxkBAAIDCmqLynUJPQSlhazKQkTg3hVy8UXDAAI4MgACRmcgSjmL6cMNlqrvPQQ",
+                "BAACAgIAAxkBAAIDDGqLyne6z4VONjWI5SpaT_BMPVeEAAKCLQACdKhYSjxeqO6GhSIgPQQ",
+                "BAACAgIAAxkBAAIDDmqLynv_ddCoLw3ZS61oWc9aV3_dAALbOwAC033gSgw_uoyJsrYSPQQ",
+                "BAACAgIAAxkBAAIDEGqLyn3iL9983B3S0BcKCad2bbQ_AAL_MwACmTM4S2AoXyPKNBDrPQQ",
+                "BAACAgIAAxkBAAIDEmqLyoA0_K78Uqp0lJM1ReTgJr8HAAKeNwACnsm4Szo5-rGKmRNEPQQ",
+                "BAACAgIAAxkBAAIDFGqLyoMq5s62Vdqv3lyjC6_7l4wmAAKrNAAC8S55SEANcalgSTxtPQQ",
+                "BAACAgIAAxkBAAIDFmqLyoWto7g6N0pmj2izM4xbVOmHAAKxNAAC8S55SN31yczt35ZOPQQ",
+                "BAACAgIAAxkBAAIDGGqLyog8MALKnaPZPrYzyERzz6dmAAL1PQACvJ-RSI7ahj1KTW7gPQQ",
+                "BAACAgIAAxkBAAIDGmqLyop79sCilwJV0sLjam_5rBZlAAKvQgACfcJRSC_1XNOBzSotPQQ",
+                "BAACAgIAAxkBAAIDHGqLyoz26ezhAzOAg5OdbCaJ3cfsAAKeQAACftVoSJjC56GaG-3DPQQ",
+                "BAACAgIAAxkBAAIDHmqLyo87mMEd4tWcN3yCG_OL6QUMAAJyNwACmmKASIvYF4yXj8b9PQQ"
             ]
             for ep in zombi_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (1, ep))
 
-            # 2-Anime: Akademiyaning birinchi raqamli boy qizi
+            # 2-Anime: Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (2, "Akademiyaning birinchi raqamli boy qizi", "Romantika"))
+                             (2, "Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim", "Romantika, Komediya"))
             akad_eps = [
-                "BURE_FILE_ID_1", "BURE_FILE_ID_2"
+                "BAACAgIAAxkBAAIC7mqLyixFAyBUE39aBieVXfRpNpOqAAIDHwACXKNZSs8JjwrjcGI_PQQ",
+                "BAACAgIAAxkBAAIC72qLyizCmTaM7Ps3UkF2S5KZYj_VAAJ_IwACW3VgS7zWNDOLr76IPQQ",
+                "BAACAgIAAxkBAAIC8GqLyixlTUmT_3DwyD1Fr0EfNGC5AAIEIgAClYgQSzoDERkp59oHPQQ",
+                "BAACAgIAAxkBAAIC8WqLyiwwEBs1VEQoP68TMs4vlEHpAAJyIgACqNGgS0hxSlxKQdYVPQQ",
+                "BAACAgIAAxkBAAIC8mqLyixxvjV_10NALdYfGsfgA92HAAK0IQACPaWBSwqr39AAAbWO5D0E",
+                "BAACAgIAAxkBAAIC82qLyiwNWqdOR2YN0Mf4vNRAA8_aAAMeAAJE8flLmyi689aR8jA9BA",
+                "BAACAgIAAxkBAAIC9GqLyizdocOXHHSEJu2uupJTfP8zAAKDIwACPnQgSD-Sn_cMPd0tPQQ",
+                "BAACAgIAAxkBAAIC9WqLyiwSJb5-eAZq0IDHnjCwG2QbAAIZKQAC3TdASvDSAiWwvPGdPQQ",
+                "BAACAgIAAxkBAAIC92qLyiwqdn7YgZ6Py1lUygLjEWA6AAI2NQAC3BAoSFFJQNyPhiX3PQQ",
+                "BAACAgIAAxkBAAIC-GqLyixg71LdhiIESoBszbBgPb3RAAJENQAC3BAoSOauMhlNiQxRPQQ",
+                "BAACAgIAAxkBAAIC-WqLyiz9uKJawHP0mOfQtIkIkfVzAAJWNQAC3BAoSMnTmeaus9OGPQQ",
+                "BAACAgIAAxkBAAIC-mqLyix7aHfYULgb1Ff8yYETGHUaAAIlkgAC80rRSegEI-Ds64PMPQQ"
             ]
             for ep in akad_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (2, ep))
@@ -63,7 +85,13 @@ async def init_db():
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                              (3, "Arra Odam (Chainsaw Man)", "Ekshn, Qorong'u Fentezi, Shounen"))
             chainsaw_eps = [
-                "BURE_FILE_ID_1", "BURE_FILE_ID_2"
+                "BAACAgIAAxkBAAIC4GqLyYrO-0FrHTGykLAs7KdxBdJiAAIapgAC51hoSjssBuD_2phrPQQ",
+                "BAACAgIAAxkBAAIC4mqLycyM-sC15Vtd_W1raHVeCGcZAAJqmwACMi2gShpWQcLhm_sQPQQ",
+                "BAACAgIAAxkBAAIC5GqLydPFeYWMg9ON7MuTnyO8a1fAAAIErwAC38noSp0cgRXrYWllPQQ",
+                "BAACAgIAAxkBAAIC5mqLydpioaX7H-3I_pMhYU7gZbtHAAIEqAACGF1BS4bBRKTPW-7TPQQ",
+                "BAACAgIAAxkBAAIC6GqLyeA69H0Gy-XqJIy1qhAb1A_4AALoqgAC3C2AS5COMOI9-bHyPQQ",
+                "BAACAgQAAxkBAAIC6mqLyeq6LnxIitI0s-W5S70YF5CsAAJZHgACF6LoUz3imBALBhDOPQQ",
+                "BAACAgQAAxkBAAIC7GqLyfE5uR62XUnph9s0vPOilCpQAAKqHwACMnQxUEJkzEzWAAFTMz0E"
             ]
             for ep in chainsaw_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (3, ep))
