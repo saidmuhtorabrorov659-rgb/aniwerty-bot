@@ -41,7 +41,7 @@ async def init_db():
         if count == 0:
             # 1-Anime: Zom 100 (start=1)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (1, "Zombi 100: O'lim oldi ro'yxat", "🎬 Anime: Zombi 100: O'lim oldi ro'yxat\n🎥 Qismlar: 12\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Komediya, Ekshn, Sarguzasht\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 1"))
+                           (1, "Zombi 100: O'lim oldi ro'yxat", "🎬 Anime: Zombi 100: O'lim oldi ro'yxat\n🎥 Qismlar: 12\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Komediya, Ekshn, Sarguzasht\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 1"))
             zombi_eps = [
                 "BAACAgIAAxkBAAIDCGqLynGOtrxRW0NJvgVTbYclFoF6AALZLgACIfqASaBM5ua2C6coPQQ",
                 "BAACAgIAAxkBAAIDCmqLynUJPQSlhazKQkTg3hVy8UXDAAI4MgACRmcgSjmL6cMNlqrvPQQ",
@@ -61,7 +61,7 @@ async def init_db():
 
             # 2-Anime: Akademiyaning birinchi boy qizi (start=2)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (2, "Akademiyaning birinchi raqamli boy qizi...", "🎬 Anime: Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim\n🎥 Qismlar: 7\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Romantika, Komediya\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 2"))
+                           (2, "Akademiyaning birinchi raqamli boy qizi...", "🎬 Anime: Akademiyaning birinchi raqamli boy qiziga yashirincha enagalik qiladigan boʻldim\n🎥 Qismlar: 7\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Romantika, Komediya\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 2"))
             akad_eps = [
                 "BAACAgIAAxkBAAIC4GqLyYrO-0FrHTGykLAs7KdxBdJiAAIapgAC51hoSjssBuD_2phrPQQ",
                 "BAACAgIAAxkBAAIC4mqLycyM-sC15Vtd_W1raHVeCGcZAAJqmwACMi2gShpWQcLhm_sQPQQ",
@@ -76,7 +76,7 @@ async def init_db():
 
             # 3-Anime: Arra Odam (start=3)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
-                             (3, "Arra Odam (Chainsaw Man)", "🎬 Anime: Arra Odam (Chainsaw Man)\n🎥 Qismlar: 13\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Ekshn, Qorong'u Fentezi, Shounen\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 3"))
+                           (3, "Arra Odam (Chainsaw Man)", "🎬 Anime: Arra Odam (Chainsaw Man)\n🎥 Qismlar: 13\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Ekshn, Qorong'u Fentezi, Shounen\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 3"))
             chainsaw_eps = [
                 "BAACAgIAAxkBAAIC7mqLyixFAyBUE39aBieVXfRpNpOqAAIDHwACXKNZSs8JjwrjcGI_PQQ",
                 "BAACAgIAAxkBAAIC72qLyizCmTaM7Ps3UkF2S5KZYj_VAAJ_IwACW3VgS7zWNDOLr76IPQQ",
@@ -173,6 +173,12 @@ async def genre_cb(callback: types.CallbackQuery):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⬅️ Orqaga", callback_data="back_to_main")]])
     await callback.message.edit_text("🎭 Janrni tanlang:", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
+
+# Videoni qabul qilib file_id chiqarib beruvchi handler
+@dp.message(F.video)
+async def handle_videos(message: types.Message):
+    file_id = message.video.file_id
+    await message.answer(f"📹 **Video qabul qilindi!**\n\nUshbu videoning `file_id` si:\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
 
 @dp.message(F.text)
 async def handle_text_messages(message: types.Message):
@@ -292,7 +298,3 @@ if __name__ == "__main__":
     import asyncio
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(dp.start_polling(bot))
-    @dp.message(F.video)
-async def handle_videos(message: types.Message):
-    file_id = message.video.file_id
-    await message.answer(f"📹 **Video qabul qilindi!**\n\nUshbu videoning `file_id` si:\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
