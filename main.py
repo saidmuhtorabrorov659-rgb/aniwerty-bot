@@ -94,6 +94,25 @@ async def init_db():
             ]
             for ep in chainsaw_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (3, ep))
+                # 4-Anime: Alya ba'zan men bilan rus tilida noz-karashma qiladi (start=4)
+            await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
+                           (4, "Alya ba'zan men bilan rus tilida noz-karashma qiladi", "🎬 Anime: Alya ba'zan men bilan rus tilida noz-karashma qiladi\n🎥 Qismlar: 12\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Romantika, Komediya\n🟢 Holati: Davom etmoqda\n🆔 Anime Kodi: 4"))
+            alya_eps = [
+                "BAACAgIAAxkBAAIDRGqS1481enmZDFe9qcweDdS3JKY2AAJCUAACYZRRSNfv47Pn7jCMPQQ",
+                "BAACAgIAAxkBAAIDRWqS15OeNsq_0XUkFGaA2Td-nw65AAL_RgACHNV5SLRizdhYT6BLPQQ",
+                "BAACAgIAAxkBAAIDRmqS15ZU4AEBepJb2YJPBlifRrHZAAJqTQACMh_JSL3y07vA_DcuPQQ",
+                "BAACAgIAAxkBAAIDR2qS15n6rEs3fcQ84xS38Dy4ow4AA75MAAJ9_UFJRQHNoWBsoIM9BA",
+                "BAACAgIAAxkBAAIDSGqS153ItVUBWKRkChu87webU7iUAAJhUAACrXSISe0Pfd69LRd6PQQ",
+                "BAACAgIAAxkBAAIDSWqS16F_66GcE1_jVk-QSxLvp75DAAJCUAACq4XASa7DEnQQH1yBPQQ",
+                "BAACAgIAAxkBAAIDSmqS16TjHCIRc8-aPImzuZEu_G0bAAK1UgACUHk4SscfZT4PhKUJPQQ",
+                "BAACAgIAAxkBAAIDS2qS16lDGmq9XSJiCnx3b3v5TIpEAAIkVQAC2u2ASmS5GHUeGzHRPQQ",
+                "BAACAgIAAxkBAAIDTGqS16whx8vhRg6V7qStwd0wrCK7AAI_TwAC5DYIS57V6OvIWvOlPQQ",
+                "BAACAgIAAxkBAAIDTWqS17AyaRmzc1U-xUBR5J5c4tOEAAJKVgACnNMYS_dFIQE4PSYbPQQ",
+                "BAACAgIAAxkBAAIDTmqS17YbRCJCb69YFZb-D0PNP495AAL6UQACsaspS9ETLo_JgonRPQQ",
+                "BAACAgIAAxkBAAIDT2qS17qoFHRw4QTNfS3KbOxJWij7AAKpUQACX81JSMjs_aHZ4dOgPQQ"
+            ]
+            for ep in alya_eps:
+                await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (4, ep))
 
             await db.commit()
 
