@@ -292,3 +292,7 @@ if __name__ == "__main__":
     import asyncio
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(dp.start_polling(bot))
+    @dp.message(F.video)
+async def handle_videos(message: types.Message):
+    file_id = message.video.file_id
+    await message.answer(f"📹 **Video qabul qilindi!**\n\nUshbu videoning `file_id` si:\n`{file_id}`", parse_mode=ParseMode.MARKDOWN)
