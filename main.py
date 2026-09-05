@@ -7,7 +7,7 @@ import aiosqlite
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, BotCommand
 
 DB_NAME = "aniwerty.db"
 
@@ -15,6 +15,12 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 user_search_state = {}
+
+async def set_bot_commands(bot: Bot):
+    commands = [
+        BotCommand(command="start", description="Botni ishga tushirish / Asosiy menyu")
+    ]
+    await bot.set_my_commands(commands)
 
 async def init_db():
     async with aiosqlite.connect(DB_NAME) as db:
@@ -94,7 +100,8 @@ async def init_db():
             ]
             for ep in chainsaw_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (3, ep))
-                # 4-Anime: Alya ba'zan men bilan rus tilida noz-karashma qiladi (start=4)
+                
+            # 4-Anime: Alya ba'zan men bilan rus tilida noz-karashma qiladi (start=4)
             await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
                            (4, "Alya ba'zan men bilan rus tilida noz-karashma qiladi", "🎬 Anime: Alya ba'zan men bilan rus tilida noz-karashma qiladi\n🎥 Qismlar: 12\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Romantika, Komediya\n🟢 Holati: Davom etmoqda\n🆔 Anime Kodi: 4"))
             alya_eps = [
@@ -113,6 +120,26 @@ async def init_db():
             ]
             for ep in alya_eps:
                 await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (4, ep))
+
+            # 5-Anime: Qora chaqiruvchi (Black Summoner) (start=5)
+            await db.execute("INSERT INTO anime (id, title, description) VALUES (?, ?, ?)", 
+                           (5, "Qora chaqiruvchi (Black Summoner)", "🎬 Anime: Qora chaqiruvchi (Black Summoner)\n🎥 Qismlar: 12\n💿 Sifati: 720p, 1080p\n🇺🇿 Tili: Uzbekcha\n🎭 Janr: Ekshn, Fentezi, Sarguzasht\n🟢 Holati: Tugagan\n🆔 Anime Kodi: 5"))
+            summoner_eps = [
+                "BAACAgUAAxkBAAIDfmqcPAZ9mFLefbOfspd1Yls9gcPUAAKzCwACHkHoV8u7qhpoy_PiPQQ",
+                "BAACAgUAAxkBAAIDgGqcPBcEk8qEqR4mE_bG9fuva_BjAAK0CwACHkHoV0sM_r3q8_jzPQQ",
+                "BAACUAAxkBAAIDgmqcPB00sATSM1591pWgqgqMHu1XAAK2CwACHkHoV766t02nF6sYPQQ".replace("BAACU", "BAACAgU"),
+                "BAACAgUAAxkBAAIDhGqcPCifmokLbmtS3oowCrQkzZsfAAK4CwACHkHoV-qaUsbQA5DiPQQ",
+                "BAACAgUAAxkBAAIDhmqcPC61R4d5uayJloL6_v5izAyCAAK5CwACHkHoV0j7snR6MrAcPQQ",
+                "BAACAgUAAxkBAAIDiGqcPDOX10-Il4iAopTdJqgjgwcNAAKiDgAC-OYYVdhPuOBh6oekPQQ",
+                "BAACAgUAAxkBAAIDimqcPDjNwwqauHbMkWm5_Pagkj_LAAKoDgAC-OYYVTYsmeS0Bs2ZPQQ",
+                "BAACAgUAAxkBAAIDjGqcPD46KBwhMXlHN49bGhmCgnU4AAKpDgAC-OYYVfkadkUZyOX5PQQ",
+                "BAACAgUAAxkBAAIDjmqcPEPrniVGxHGi9uQa4wMLhvT6AAKqDgAC-OYYVfKFCLn8MEp8PQQ",
+                "BAACAgUAAxkBAAIDkGqcPEmAhcW8Al80oc97I2Vq5uZOAAKsDgAC-OYYVcRgxag9b6FAPQQ",
+                "BAACAgUAAxkBAAIDkmqcPE8W-oiEFI8q6TiPp3p10kL3AAKtDgAC-OYYVXdOs-BprRgiPQQ",
+                "BAACAgIAAxkBAAIDlGqcPL1wFhjd80NNF9GbYT7N7BGqAAKAIwACPnQgSF_xexpdZyL5PQQ"
+            ]
+            for ep in summoner_eps:
+                await db.execute("INSERT INTO episodes (anime_id, video_file_id) VALUES (?, ?)", (5, ep))
 
             await db.commit()
 
@@ -193,7 +220,6 @@ async def genre_cb(callback: types.CallbackQuery):
     await callback.message.edit_text("🎭 Janrni tanlang:", reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
     await callback.answer()
 
-# Videoni qabul qilib file_id chiqarib beruvchi handler
 @dp.message(F.video)
 async def handle_videos(message: types.Message):
     file_id = message.video.file_id
@@ -313,7 +339,11 @@ async def back_to_main(callback: types.CallbackQuery):
         )
     await callback.answer()
 
+async def main():
+    await set_bot_commands(bot)
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    await dp.start_polling(bot)
+
 if __name__ == "__main__":
     import asyncio
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    asyncio.run(dp.start_polling(bot))
+    asyncio.run(main())
